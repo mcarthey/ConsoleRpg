@@ -19,7 +19,7 @@ public class Game
         _playerService = new PlayerService(_context);
         _locationService = new LocationService(_context);
         _merchantService = new MerchantService(_context);
-        _combatService = new CombatService();
+        _combatService = new CombatService(_playerService);
         _questService = new QuestService(_context);
     }
 
