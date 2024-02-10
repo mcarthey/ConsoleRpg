@@ -71,7 +71,11 @@ public class PlayerService
         player.Health = 100; // Reset health to initial value
         player.Gold = 0; // Reset gold to initial value
         player.Inventory.Clear(); // Clear inventory
-        // Reset other attributes as needed...
+                                  // Reset other attributes as needed...
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("You have died... upsetting but resetting");
+        Console.ResetColor();
 
         _context.SaveChanges(); // Save changes to the database
     }
