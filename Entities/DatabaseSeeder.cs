@@ -1,4 +1,4 @@
-using ConsoleRpg.Entities;
+namespace ConsoleRpg.Entities;
 
 public class DatabaseSeeder
 {

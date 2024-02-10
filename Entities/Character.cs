@@ -1,3 +1,5 @@
+namespace ConsoleRpg.Entities;
+
 public abstract class Character
 {
     public string Name { get; set; }

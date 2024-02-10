@@ -1,5 +1,7 @@
 using ConsoleRpg.Entities;
 
+namespace ConsoleRpg.Services;
+
 public class CombatService
 {
     private const int DamageRandomness = 10;
