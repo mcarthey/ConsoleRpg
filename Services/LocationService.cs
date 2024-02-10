@@ -49,6 +49,27 @@ public class LocationService
         DisplayLocationContents(location);
     }
 
+    public void MoveToLocation()
+    {
+        var locations = GetAllLocations();
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Where would you like to move?");
+        Console.ResetColor();
+        for (int i = 0; i < locations.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. {locations[i].Name}");
+        }
+
+        string? locationChoiceString = Console.ReadLine();
+        if (locationChoiceString == null)
+        {
+            throw new Exception("Failed to read choice.");
+        }
+
+        int locationChoice = int.Parse(locationChoiceString);
+        Move(locations[locationChoice - 1]);
+    }
+
     private void DisplayLocationContents(Location location)
     {
         Console.ForegroundColor = ConsoleColor.Cyan;

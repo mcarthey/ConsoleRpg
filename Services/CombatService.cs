@@ -28,6 +28,18 @@ public class CombatService
         }
     }
 
+    public void AttackEnemies(Player player, Location currentLocation)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Attacking enemies...");
+        Console.ResetColor();
+        var enemies = currentLocation.Enemies;
+        foreach (var enemy in enemies)
+        {
+            Combat(player, enemy);
+        }
+    }
+
     private void Attack(Character attacker, Character defender)
     {
         int damage = CalculateDamage(attacker.Attack);

@@ -19,6 +19,14 @@ public class MerchantService
         return _context.Merchants.FirstOrDefault() ?? throw new Exception("No merchant found.");
     }
 
+    public void DisplayVisitMessage(Player player)
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("Visiting the merchant...");
+        Console.ResetColor();
+        VisitMerchant(player);
+    }
+
     public void VisitMerchant(Player player)
     {
         Console.WriteLine($"Welcome to {_merchant.Name}'s shop!");

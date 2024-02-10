@@ -16,6 +16,23 @@ public class QuestService
         return player.ActiveQuests;
     }
 
+    public void PickUpQuest(Player player, Quest quest)
+    {
+        if (quest != null)
+        {
+            AddQuest(player, quest);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nYou have picked up a new quest: {quest.Name}\n");
+            Console.ResetColor();
+        }
+        else
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\nThere is no quest to pick up in this location.\n");
+            Console.ResetColor();
+        }
+    }
+
     public void AddQuest(Player player, Quest quest)
     {
         player.ActiveQuests.Add(quest);

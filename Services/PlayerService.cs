@@ -66,6 +66,22 @@ public class PlayerService
         }
     }
 
+    public void ViewCurrentQuests()
+    {
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("Viewing current quests...");
+        Console.ResetColor();
+        ShowActiveQuests();
+    }
+
+    public void CheckInventory()
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Checking inventory...");
+        Console.ResetColor();
+        ShowInventory();
+    }
+
     public void SavePlayer()
     {
         _context.SaveChanges();

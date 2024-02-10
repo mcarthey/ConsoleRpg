@@ -52,83 +52,51 @@ public class Game
             switch (choice)
             {
                 case "1":
-                    var locations = _locationService.GetAllLocations();
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Where would you like to move?");
-                    Console.ResetColor();
-                    for (int i = 0; i < locations.Count; i++)
-                    {
-                        Console.WriteLine($"{i + 1}. {locations[i].Name}");
-                    }
-                    string? locationChoiceString = Console.ReadLine();
-                    if (locationChoiceString == null)
-                    {
-                        throw new Exception("Failed to read choice.");
-                    }
-                    int locationChoice = int.Parse(locationChoiceString);
-                    _locationService.Move(locations[locationChoice - 1]);
+                    _locationService.MoveToLocation();
                     break;
                 case "2":
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Checking inventory...");
-                    Console.ResetColor();
-                    _playerService.ShowInventory();
+                    _playerService.CheckInventory();
                     break;
                 case "3":
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Attacking enemies...");
-                    Console.ResetColor();
                     var player = _playerService.GetPlayer();
                     var currentLocation = _locationService.GetCurrentLocation();
-                    var enemies = currentLocation.Enemies;
-                    foreach (var enemy in enemies)
-                    {
-                        _combatService.Combat(player, enemy);
-                    }
+                    _combatService.AttackEnemies(player, currentLocation);
                     break;
 
                 case "4":
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine("Visiting the merchant...");
-                    Console.ResetColor();
-                    _merchantService.VisitMerchant(_playerService.GetPlayer());
+                    _merchantService.DisplayVisitMessage(_playerService.GetPlayer());
                     break;
                 case "5":
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("Viewing current quests...");
-                    Console.ResetColor();
-                    _playerService.ShowActiveQuests();
+                    _playerService.ViewCurrentQuests();
                     break;
                 case "6":
                     var quest = _locationService.GetQuestInCurrentLocation();
-                    if (quest != null)
-                    {
-                        _questService.AddQuest(_playerService.GetPlayer(), quest);
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"\nYou have picked up a new quest: {quest.Name}\n");
-                        Console.ResetColor();
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("\nThere is no quest to pick up in this location.\n");
-                        Console.ResetColor();
-                    }
+                    _questService.PickUpQuest(_playerService.GetPlayer(), quest);
                     break;
                 case "7":
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("Saving player and quitting game...");
-                    Console.ResetColor();
-                    _playerService.SavePlayer();
-                    Environment.Exit(0);
+                    SavePlayerAndQuit();
                     break;
                 default:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid choice. Please try again.");
-                    Console.ResetColor();
+                    InvalidChoice();
                     break;
             }
         }
+    }
+
+    private static void InvalidChoice()
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Invalid choice. Please try again.");
+        Console.ResetColor();
+    }
+
+    private void SavePlayerAndQuit()
+    {
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("Saving player and quitting game...");
+        Console.ResetColor();
+        _playerService.SavePlayer();
+        Environment.Exit(0);
     }
 
 }
