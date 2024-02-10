@@ -2,7 +2,7 @@
 
 // A quest belongs to a player.
 // Add a PlayerId property to link each quest to a player
-public class Quest
+public abstract class Quest
 {
     public string Description { get; set; }
     public int Id { get; set; }
@@ -20,5 +20,9 @@ public class Quest
 
     public int KillCount { get; set; } // Number of enemies to kill to complete the quest
     public int KillCountProgress { get; set; } // Current progress towards KillCount
-
+    
+    public string Target { get; set; }
+    
+    public abstract void DisplayProgress();
 }
+

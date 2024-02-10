@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ConsoleRpg.Models.Quests;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsoleRpg.Entities;
 
@@ -10,7 +11,12 @@ public class RpgContext : DbContext
     public DbSet<Location> Locations { get; set; }
     public DbSet<Merchant> Merchants { get; set; }
     public DbSet<Player> Players { get; set; }
-    public DbSet<Quest> Quests { get; set; }
+
+    public DbSet<KillEnemiesQuest> KillEnemiesQuests { get; set; }
+    public DbSet<FindLocationQuest> FindLocationQuests { get; set; }
+    public DbSet<FindItemQuest> FindItemQuests { get; set; }
+    public DbSet<FindNpcQuest> FindNpcQuests { get; set; }
+
     public DbSet<Npc> Npcs { get; set; }
     public DbSet<DialogueOption> DialogueOptions { get; set; }
 

@@ -1,3 +1,5 @@
+using ConsoleRpg.Models.Quests;
+
 namespace ConsoleRpg.Entities;
 
 public class DatabaseSeeder
@@ -45,10 +47,10 @@ public class DatabaseSeeder
         SeedDialogueOption("I can make potions for you.", npc2.Id);
 
         // Seed Quests
-        var quest1 = SeedQuest("Quest 1", "This is the first quest.", 100, 50, startingLocation.Id);
-        var quest2 = SeedQuest("Quest 2", "This is the second quest.", 200, 100, secondLocation.Id);
-        var quest3 = SeedQuest("Build a house", "Help Bob build a house.", 100, 50, startingLocation.Id, npc1.Id);
-        var quest4 = SeedQuest("Find potion ingredients", "Help Alice find ingredients for her potions.", 200, 100, secondLocation.Id, npc2.Id);
+        var quest1 = SeedQuest("Kill Goblins", "Kill 10 goblins.", 100, 50, startingLocation.Id, npc1.Id, "KillEnemies", "10");
+        var quest2 = SeedQuest("Find Sword", "Find the legendary sword.", 200, 100, secondLocation.Id, npc2.Id, "FindItem", "Sword");
+        var quest3 = SeedQuest("Find Alice", "Find Alice the Alchemist.", 100, 50, startingLocation.Id, npc1.Id, "FindNpc", "Alice the Alchemist");
+        var quest4 = SeedQuest("Find Second Location", "Find the second location.", 200, 100, secondLocation.Id, npc2.Id, "FindLocation", "Second Location");
 
         _context.SaveChanges();
     }
@@ -81,27 +83,6 @@ public class DatabaseSeeder
             _context.DialogueOptions.Add(dialogueOption);
             _context.SaveChanges();
         }
-    }
-
-    private Quest SeedQuest(string name, string description, int rewardExperience, int rewardGold, int locationId, int npcId)
-    {
-        if (!_context.Quests.Any(q => q.Name == name))
-        {
-            var quest = new Quest
-            {
-                Name = name,
-                Description = description,
-                RewardExperience = rewardExperience,
-                RewardGold = rewardGold,
-                LocationId = locationId,
-                NpcId = npcId
-            };
-            _context.Quests.Add(quest);
-            _context.SaveChanges();
-            return quest;
-        }
-
-        return _context.Quests.First(q => q.Name == name);
     }
 
     private void AssignItemToMerchant(Item item, int merchantId)
@@ -200,23 +181,84 @@ public class DatabaseSeeder
         return _context.Merchants.First(m => m.Name == name);
     }
 
-    private Quest SeedQuest(string name, string description, int rewardExperience, int rewardGold, int locationId)
+    private Quest SeedQuest(string name, string description, int rewardExperience, int rewardGold, int locationId, int npcId, string questType, string questTarget)
     {
-        if (!_context.Quests.Any(q => q.Name == name))
+        Quest? quest = null;
+
+        switch (questType)
         {
-            var quest = new Quest
-            {
-                Name = name,
-                Description = description,
-                RewardExperience = rewardExperience,
-                RewardGold = rewardGold,
-                LocationId = locationId
-            };
-            _context.Quests.Add(quest);
-            _context.SaveChanges();
-            return quest;
+            case "KillEnemies":
+                quest = _context.KillEnemiesQuests.FirstOrDefault(q => q.Name == name);
+                if (quest == null)
+                {
+                    quest = new KillEnemiesQuest
+                    {
+                        Name = name,
+                        Description = description,
+                        RewardExperience = rewardExperience,
+                        RewardGold = rewardGold,
+                        LocationId = locationId,
+                        NpcId = npcId,
+                        Target = questTarget
+                    };
+                    _context.KillEnemiesQuests.Add((KillEnemiesQuest)quest);
+                }
+                break;
+            case "FindLocation":
+                quest = _context.FindLocationQuests.FirstOrDefault(q => q.Name == name);
+                if (quest == null)
+                {
+                    quest = new FindLocationQuest
+                    {
+                        Name = name,
+                        Description = description,
+                        RewardExperience = rewardExperience,
+                        RewardGold = rewardGold,
+                        LocationId = locationId,
+                        NpcId = npcId,
+                        Target = questTarget
+                    };
+                    _context.FindLocationQuests.Add((FindLocationQuest)quest);
+                }
+                break;
+            case "FindItem":
+                quest = _context.FindItemQuests.FirstOrDefault(q => q.Name == name);
+                if (quest == null)
+                {
+                    quest = new FindItemQuest
+                    {
+                        Name = name,
+                        Description = description,
+                        RewardExperience = rewardExperience,
+                        RewardGold = rewardGold,
+                        LocationId = locationId,
+                        NpcId = npcId,
+                        Target = questTarget
+                    };
+                    _context.FindItemQuests.Add((FindItemQuest)quest);
+                }
+                break;
+            case "FindNpc":
+                quest = _context.FindNpcQuests.FirstOrDefault(q => q.Name == name);
+                if (quest == null)
+                {
+                    quest = new FindNpcQuest
+                    {
+                        Name = name,
+                        Description = description,
+                        RewardExperience = rewardExperience,
+                        RewardGold = rewardGold,
+                        LocationId = locationId,
+                        NpcId = npcId,
+                        Target = questTarget
+                    };
+                    _context.FindNpcQuests.Add((FindNpcQuest)quest);
+                }
+                break;
         }
 
-        return _context.Quests.First(q => q.Name == name);
+        _context.SaveChanges();
+
+        return quest;
     }
 }
