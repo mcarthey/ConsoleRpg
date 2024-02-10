@@ -52,7 +52,28 @@ public class DatabaseSeeder
         var quest3 = SeedQuest("Find Alice", "Find Alice the Alchemist.", 100, 50, startingLocation.Id, npc1.Id, "FindNpc", "Alice the Alchemist");
         var quest4 = SeedQuest("Find Second Location", "Find the second location.", 200, 100, secondLocation.Id, npc2.Id, "FindLocation", "Second Location");
 
+        // Seed LootTables
+        var goblinLootTable = SeedLootTable(new List<Item> { sword }, goblin);
+        var dragonLootTable = SeedLootTable(new List<Item> { shield }, dragon);
+
+        // Assign LootTables to Enemies
+        goblin.LootTableId = goblinLootTable.Id;
+        dragon.LootTableId = dragonLootTable.Id;
+
+
         _context.SaveChanges();
+    }
+    private LootTable SeedLootTable(List<Item> items, Enemy enemy)
+    {
+        var lootTable = new LootTable();
+        foreach (var item in items)
+        {
+            lootTable.Items.Add(item);
+        }
+        lootTable.Enemy = enemy; // Associate the LootTable with the Enemy
+        _context.LootTables.Add(lootTable);
+        _context.SaveChanges();
+        return lootTable;
     }
 
     private Npc SeedNpc(string name)

@@ -4,6 +4,7 @@ using ConsoleRpg.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsoleRpg.Migrations
 {
     [DbContext(typeof(RpgContext))]
-    partial class RpgContextModelSnapshot : ModelSnapshot
+    [Migration("20240210231344_UpdatedEnemy")]
+    partial class UpdatedEnemy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,9 +75,6 @@ namespace ConsoleRpg.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("LocationId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("LootTableId")
                         .HasColumnType("int");
 
                     b.Property<int>("MaxHealth")
@@ -330,14 +330,13 @@ namespace ConsoleRpg.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("EnemyId")
+                    b.Property<int>("EnemyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EnemyId")
-                        .IsUnique()
-                        .HasFilter("[EnemyId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("LootTables");
                 });
@@ -484,7 +483,9 @@ namespace ConsoleRpg.Migrations
                 {
                     b.HasOne("ConsoleRpg.Entities.Enemy", "Enemy")
                         .WithOne("LootTable")
-                        .HasForeignKey("LootTable", "EnemyId");
+                        .HasForeignKey("LootTable", "EnemyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Enemy");
                 });

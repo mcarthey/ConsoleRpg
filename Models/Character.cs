@@ -1,4 +1,4 @@
-namespace ConsoleRpg.Entities;
+namespace ConsoleRpg.Models;
 
 public abstract class Character
 {

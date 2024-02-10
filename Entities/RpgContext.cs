@@ -16,7 +16,7 @@ public class RpgContext : DbContext
     public DbSet<FindLocationQuest> FindLocationQuests { get; set; }
     public DbSet<FindItemQuest> FindItemQuests { get; set; }
     public DbSet<FindNpcQuest> FindNpcQuests { get; set; }
-
+    public DbSet<LootTable> LootTables { get; set; }
     public DbSet<Npc> Npcs { get; set; }
     public DbSet<DialogueOption> DialogueOptions { get; set; }
 
@@ -55,6 +55,11 @@ public class RpgContext : DbContext
             .WithMany()
             .HasForeignKey(e => e.DestinationLocationId)
             .OnDelete(DeleteBehavior.Restrict); // This disables cascading deletes
+
+        modelBuilder.Entity<Enemy>()
+            .HasOne(e => e.LootTable)
+            .WithOne(l => l.Enemy)
+            .HasForeignKey<LootTable>(l => l.EnemyId);
 
         base.OnModelCreating(modelBuilder);
     }

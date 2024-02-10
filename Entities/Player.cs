@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using ConsoleRpg.Models;
 
 namespace ConsoleRpg.Entities;
 

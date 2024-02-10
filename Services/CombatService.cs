@@ -1,4 +1,5 @@
 using ConsoleRpg.Entities;
+using ConsoleRpg.Models;
 using ConsoleRpg.Services;
 
 public class CombatService
@@ -21,7 +22,7 @@ public class CombatService
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Attacking enemies...");
         Console.ResetColor();
-        var enemies = currentLocation.Enemies;
+        var enemies = currentLocation.Enemies.ToList(); // Create a copy of the collection
         foreach (var enemy in enemies)
         {
             Combat(player, enemy);
@@ -44,6 +45,7 @@ public class CombatService
                 Console.WriteLine("Enemy defeated!");
                 player.GainExperience(enemy.Experience);
                 UpdateQuestProgress(enemy);
+                DropLoot(player, enemy);
                 RespawnEnemy(enemy);
                 break;
             }
@@ -54,6 +56,19 @@ public class CombatService
                 Console.WriteLine("Player defeated!");
                 _playerService.ResetPlayer(player);
                 break;
+            }
+        }
+    }
+    private void DropLoot(Player player, Enemy enemy)
+    {
+        if (enemy.LootTable != null)
+        {
+            var item = enemy.LootTable.GetRandomItem();
+            if (item != null)
+            {
+                player.Inventory.Add(item);
+                Console.WriteLine($"You found a {item.Name}!");
+                Console.WriteLine($"You received {item.Name} from {enemy.Name}!"); 
             }
         }
     }
