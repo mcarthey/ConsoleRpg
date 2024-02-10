@@ -58,6 +58,7 @@ public class PlayerService
             foreach (var quest in player.ActiveQuests)
             {
                 Console.WriteLine($"{quest.Name}: {quest.Description}");
+                Console.WriteLine($"Kill count progress: {quest.KillCountProgress}/{quest.KillCount}");
             }
         }
     }

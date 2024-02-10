@@ -11,6 +11,8 @@ public class RpgContext : DbContext
     public DbSet<Merchant> Merchants { get; set; }
     public DbSet<Player> Players { get; set; }
     public DbSet<Quest> Quests { get; set; }
+    public DbSet<Npc> Npcs { get; set; }
+    public DbSet<DialogueOption> DialogueOptions { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

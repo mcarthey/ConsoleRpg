@@ -7,6 +7,8 @@ public class Enemy : Character
     public int Id { get; set; }
     public virtual Location Location { get; set; } // Navigation property
     public int LocationId { get; set; } // Foreign key property
+    public int? QuestId { get; set; } // Foreign key property
+    public virtual Quest Quest { get; set; } // Navigation property
 
     public void Respawn(Location newLocation)
     {

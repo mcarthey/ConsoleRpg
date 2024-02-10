@@ -8,6 +8,8 @@ public class Quest
     public int Id { get; set; }
     public bool IsCompleted { get; set; }
     public virtual Location Location { get; set; }
+    public int? NpcId { get; set; } // Foreign key property
+    public virtual Npc Npc { get; set; } // Navigation property
 
     public int? LocationId { get; set; }
     public string Name { get; set; }
@@ -15,4 +17,8 @@ public class Quest
     public virtual List<Player> Players { get; set; }
     public int RewardExperience { get; set; }
     public int RewardGold { get; set; }
+
+    public int KillCount { get; set; } // Number of enemies to kill to complete the quest
+    public int KillCountProgress { get; set; } // Current progress towards KillCount
+
 }

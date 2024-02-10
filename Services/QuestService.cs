@@ -22,6 +22,12 @@ public class QuestService
     public void CompleteQuest(Quest quest)
     {
         var player = _playerService.GetPlayer();
+        if (quest.KillCount > 0 && quest.KillCountProgress < quest.KillCount)
+        {
+            Console.WriteLine("You have not killed enough enemies to complete this quest.");
+            return;
+        }
+
         quest.IsCompleted = true;
         player.ActiveQuests.Remove(quest);
         player.GainExperience(quest.RewardExperience);

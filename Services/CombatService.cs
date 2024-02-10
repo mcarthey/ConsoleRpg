@@ -43,6 +43,7 @@ public class CombatService
             {
                 Console.WriteLine("Enemy defeated!");
                 player.GainExperience(enemy.Experience);
+                UpdateQuestProgress(enemy);
                 RespawnEnemy(enemy);
                 break;
             }
@@ -53,6 +54,18 @@ public class CombatService
                 Console.WriteLine("Player defeated!");
                 _playerService.ResetPlayer(player);
                 break;
+            }
+        }
+    }
+
+    private void UpdateQuestProgress(Enemy enemy)
+    {
+        if (enemy.Quest != null)
+        {
+            enemy.Quest.KillCountProgress++;
+            if (enemy.Quest.KillCountProgress >= enemy.Quest.KillCount)
+            {
+                enemy.Quest.IsCompleted = true;
             }
         }
     }
