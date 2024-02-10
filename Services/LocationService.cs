@@ -44,7 +44,9 @@ public class LocationService
 
     private void DisplayLocationContents(Location location)
     {
-        Console.WriteLine(location.Description);
+        Console.WriteLine("\n-------------------------");
+        Console.WriteLine($"Location: {location.Name}\n");
+        Console.WriteLine($"{location.Description}\n");
 
         // Display the items in the location
         if (location.Items.Any())
@@ -52,7 +54,7 @@ public class LocationService
             Console.WriteLine("Items in this location:");
             foreach (var item in location.Items)
             {
-                Console.WriteLine($"{item.Name}: {item.Description}");
+                Console.WriteLine($"- {item.Name}: {item.Description}");
             }
         }
         else
@@ -60,13 +62,15 @@ public class LocationService
             Console.WriteLine("There are no items in this location.");
         }
 
+        Console.WriteLine();
+
         // Display the enemies in the location
         if (location.Enemies.Any())
         {
             Console.WriteLine("Enemies in this location:");
             foreach (var enemy in location.Enemies)
             {
-                Console.WriteLine($"{enemy.Name}: {enemy.Description}");
+                Console.WriteLine($"- {enemy.Name}: {enemy.Description}");
             }
         }
         else
@@ -74,16 +78,20 @@ public class LocationService
             Console.WriteLine("There are no enemies in this location.");
         }
 
+        Console.WriteLine();
+
         // Display the quest in the location
         if (location.Quest != null)
         {
             Console.WriteLine("Quest in this location:");
-            Console.WriteLine($"{location.Quest.Name}: {location.Quest.Description}");
+            Console.WriteLine($"- {location.Quest.Name}: {location.Quest.Description}");
         }
         else
         {
             Console.WriteLine("There is no quest in this location.");
         }
+
+        Console.WriteLine();
 
         // Display the exits in the location
         if (location.Exits.Any())
@@ -91,12 +99,15 @@ public class LocationService
             Console.WriteLine("Exits from this location:");
             foreach (var exit in location.Exits)
             {
-                Console.WriteLine(exit.Direction);
+                Console.WriteLine($"- {exit.Direction}");
             }
         }
         else
         {
             Console.WriteLine("There are no exits from this location.");
         }
+
+        Console.WriteLine("-------------------------\n");
     }
+
 }
