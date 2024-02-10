@@ -7,19 +7,17 @@ public class Game
 {
     private readonly QuestService _questService;
     private readonly CombatService _combatService;
-    private readonly RpgContext _context;
     private readonly LocationService _locationService;
     private readonly MerchantService _merchantService;
     private readonly PlayerService _playerService;
 
-    public Game()
+    public Game(QuestService questService, CombatService combatService, LocationService locationService, MerchantService merchantService, PlayerService playerService)
     {
-        _context = new RpgContext();
-        _playerService = new PlayerService(_context);
-        _locationService = new LocationService(_context);
-        _merchantService = new MerchantService(_context);
-        _combatService = new CombatService(_playerService);
-        _questService = new QuestService(_context);
+        _questService = questService;
+        _combatService = combatService;
+        _locationService = locationService;
+        _merchantService = merchantService;
+        _playerService = playerService;
     }
 
     public void Start()
@@ -58,20 +56,18 @@ public class Game
                     _playerService.CheckInventory();
                     break;
                 case "3":
-                    var player = _playerService.GetPlayer();
                     var currentLocation = _locationService.GetCurrentLocation();
-                    _combatService.AttackEnemies(player, currentLocation);
+                    _combatService.AttackEnemies(currentLocation);
                     break;
-
                 case "4":
-                    _merchantService.DisplayVisitMessage(_playerService.GetPlayer());
+                    _merchantService.DisplayVisitMessage();
                     break;
                 case "5":
                     _playerService.ViewCurrentQuests();
                     break;
                 case "6":
                     var quest = _locationService.GetQuestInCurrentLocation();
-                    _questService.PickUpQuest(_playerService.GetPlayer(), quest);
+                    _questService.PickUpQuest(quest);
                     break;
                 case "7":
                     SavePlayerAndQuit();

@@ -1,14 +1,26 @@
 ﻿using ConsoleRpg.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace ConsoleRpg;
-
-internal class Program
+namespace ConsoleRpg
 {
-    private static void Main(string[] args)
+    internal class Program
     {
-        var seeder = new DatabaseSeeder(new RpgContext());
-        seeder.SeedDatabase();
-        var game = new Game();
-        game.Start();
+        private static void Main(string[] args)
+        {
+            // Create service collection
+            ServiceCollection services = new ServiceCollection();
+            Startup startup = new Startup();
+            startup.ConfigureServices(services);
+
+            // Create service provider
+            ServiceProvider serviceProvider = services.BuildServiceProvider();
+
+            // Seed database
+            var seeder = serviceProvider.GetService<DatabaseSeeder>();
+            seeder.SeedDatabase();
+
+            // Start game
+            serviceProvider.GetService<Game>().Start();
+        }
     }
 }

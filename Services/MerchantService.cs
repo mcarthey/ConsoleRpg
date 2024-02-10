@@ -1,24 +1,25 @@
 using ConsoleRpg.Entities;
-
-namespace ConsoleRpg.Services;
+using ConsoleRpg.Services;
 
 public class MerchantService
 {
     private readonly RpgContext _context;
     private readonly Merchant _merchant;
+    private readonly PlayerService _playerService;
 
-    public MerchantService(RpgContext context)
+    public MerchantService(RpgContext context, PlayerService playerService)
     {
         _context = context;
         _merchant = GetMerchant();
+        _playerService = playerService;
     }
 
-    public void DisplayVisitMessage(Player player)
+    public void DisplayVisitMessage()
     {
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.WriteLine("Visiting the merchant...");
         Console.ResetColor();
-        VisitMerchant(player);
+        VisitMerchant();
     }
 
     // GetMerchant, VisitMerchant methods go here...
@@ -27,8 +28,9 @@ public class MerchantService
         return _context.Merchants.FirstOrDefault() ?? throw new Exception("No merchant found.");
     }
 
-    public void VisitMerchant(Player player)
+    public void VisitMerchant()
     {
+        var player = _playerService.GetPlayer();
         Console.WriteLine($"Welcome to {_merchant.Name}'s shop!");
         Console.WriteLine("Available items:");
         foreach (var item in _merchant.Inventory)

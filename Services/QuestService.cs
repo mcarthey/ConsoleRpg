@@ -1,24 +1,27 @@
 using ConsoleRpg.Entities;
-
-namespace ConsoleRpg.Services;
+using ConsoleRpg.Services;
 
 public class QuestService
 {
     private readonly RpgContext _context;
+    private readonly PlayerService _playerService;
 
-    public QuestService(RpgContext context)
+    public QuestService(RpgContext context, PlayerService playerService)
     {
         _context = context;
+        _playerService = playerService;
     }
 
-    public void AddQuest(Player player, Quest quest)
+    public void AddQuest(Quest quest)
     {
+        var player = _playerService.GetPlayer();
         player.ActiveQuests.Add(quest);
         _context.SaveChanges();
     }
 
-    public void CompleteQuest(Player player, Quest quest)
+    public void CompleteQuest(Quest quest)
     {
+        var player = _playerService.GetPlayer();
         quest.IsCompleted = true;
         player.ActiveQuests.Remove(quest);
         player.GainExperience(quest.RewardExperience);
@@ -26,16 +29,18 @@ public class QuestService
         _context.SaveChanges();
     }
 
-    public List<Quest> GetActiveQuests(Player player)
+    public List<Quest> GetActiveQuests()
     {
+        var player = _playerService.GetPlayer();
         return player.ActiveQuests;
     }
 
-    public void PickUpQuest(Player player, Quest quest)
+    public void PickUpQuest(Quest quest)
     {
+        var player = _playerService.GetPlayer();
         if (quest != null)
         {
-            AddQuest(player, quest);
+            AddQuest(quest);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nYou have picked up a new quest: {quest.Name}\n");
             Console.ResetColor();

@@ -1,6 +1,5 @@
 using ConsoleRpg.Entities;
-
-namespace ConsoleRpg.Services;
+using ConsoleRpg.Services;
 
 public class CombatService
 {
@@ -13,8 +12,9 @@ public class CombatService
         _playerService = playerService;
     }
 
-    public void AttackEnemies(Player player, Location currentLocation)
+    public void AttackEnemies(Location currentLocation)
     {
+        var player = _playerService.GetPlayer();
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Attacking enemies...");
         Console.ResetColor();
