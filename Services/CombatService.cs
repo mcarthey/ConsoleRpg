@@ -6,11 +6,14 @@ public class CombatService
     private const int DamageRandomness = 10;
     private readonly PlayerService _playerService;
     private readonly Random _random = new();
+    private readonly LocationService _locationService;
 
-    public CombatService(PlayerService playerService)
+    public CombatService(PlayerService playerService, LocationService locationService)
     {
         _playerService = playerService;
+        _locationService = locationService;
     }
+
 
     public void AttackEnemies(Location currentLocation)
     {
@@ -25,6 +28,12 @@ public class CombatService
         }
     }
 
+    private void RespawnEnemy(Enemy enemy)
+    {
+        var newLocation = _locationService.GetRandomLocation();
+        enemy.Respawn(newLocation);
+    }
+
     public void Combat(Player player, Enemy enemy)
     {
         while (player.Health > 0 && enemy.Health > 0)
@@ -34,6 +43,7 @@ public class CombatService
             {
                 Console.WriteLine("Enemy defeated!");
                 player.GainExperience(enemy.Experience);
+                RespawnEnemy(enemy);
                 break;
             }
 

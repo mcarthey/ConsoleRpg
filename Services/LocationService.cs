@@ -49,6 +49,13 @@ public class LocationService
         DisplayLocationDetails(_currentLocation);
     }
 
+    public Location GetRandomLocation()
+    {
+        var locations = GetAllLocations();
+        var randomIndex = new Random().Next(locations.Count);
+        return locations[randomIndex];
+    }
+
     public void MoveToLocation()
     {
         var locations = GetAllLocations();

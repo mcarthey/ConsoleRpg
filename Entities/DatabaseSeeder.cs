@@ -56,6 +56,7 @@ public class DatabaseSeeder
                 Name = name,
                 Description = description,
                 Health = health,
+                MaxHealth = health,
                 Damage = damage,
                 Experience = experience,
                 LocationId = locationId

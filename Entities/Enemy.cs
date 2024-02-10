@@ -7,4 +7,11 @@ public class Enemy : Character
     public int Id { get; set; }
     public virtual Location Location { get; set; } // Navigation property
     public int LocationId { get; set; } // Foreign key property
+
+    public void Respawn(Location newLocation)
+    {
+        Health = MaxHealth; // Reset health to max health
+        Location = newLocation; // Set new location
+        LocationId = newLocation.Id; // Update foreign key
+    }
 }

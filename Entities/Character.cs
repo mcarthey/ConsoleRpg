@@ -7,5 +7,6 @@ public abstract class Character
     public string Description { get; set; }
     public int Experience { get; set; }
     public int Health { get; set; }
+    public int MaxHealth { get; set; }
     public string Name { get; set; }
 }
