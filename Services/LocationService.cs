@@ -19,6 +19,11 @@ public class LocationService
         return _context.Locations.FirstOrDefault() ?? throw new Exception("No starting location found.");
     }
 
+    public Quest GetQuestInCurrentLocation()
+    {
+        return _currentLocation.Quest;
+    }
+
     public Location GetCurrentLocation()
     {
         return _currentLocation;
@@ -38,15 +43,19 @@ public class LocationService
 
     public void DisplayLocationDetails(Location location)
     {
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"You are now in {location.Name}");
+        Console.ResetColor();
         DisplayLocationContents(location);
     }
 
     private void DisplayLocationContents(Location location)
     {
+        Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("\n-------------------------");
         Console.WriteLine($"Location: {location.Name}\n");
         Console.WriteLine($"{location.Description}\n");
+        Console.ResetColor();
 
         // Display the items in the location
         if (location.Items.Any())
