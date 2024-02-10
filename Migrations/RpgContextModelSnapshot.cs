@@ -71,6 +71,9 @@ namespace ConsoleRpg.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("DestinationLocationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Direction")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -80,9 +83,11 @@ namespace ConsoleRpg.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DestinationLocationId");
+
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Exit");
+                    b.ToTable("Exits");
                 });
 
             modelBuilder.Entity("ConsoleRpg.Entities.Item", b =>
@@ -263,11 +268,19 @@ namespace ConsoleRpg.Migrations
 
             modelBuilder.Entity("ConsoleRpg.Entities.Exit", b =>
                 {
+                    b.HasOne("ConsoleRpg.Entities.Location", "DestinationLocation")
+                        .WithMany()
+                        .HasForeignKey("DestinationLocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ConsoleRpg.Entities.Location", "Location")
                         .WithMany("Exits")
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("DestinationLocation");
 
                     b.Navigation("Location");
                 });

@@ -15,6 +15,10 @@ public class DatabaseSeeder
         var startingLocation = SeedLocation("Starting Location", "This is where the player starts the game.");
         var secondLocation = SeedLocation("Second Location", "This is the second location.");
 
+        // Seed Exits
+        SeedExit("north", startingLocation.Id, secondLocation.Id);
+        SeedExit("south", secondLocation.Id, startingLocation.Id);
+
         // Seed Items
         var sword = SeedItem("Sword", "A sharp blade.", 10, startingLocation.Id);
         var shield = SeedItem("Shield", "A sturdy shield.", 15, secondLocation.Id);
@@ -35,6 +39,21 @@ public class DatabaseSeeder
         AssignItemToMerchant(shield, merchant.Id);
 
         _context.SaveChanges();
+    }
+
+    private void SeedExit(string direction, int locationId, int destinationLocationId)
+    {
+        if (!_context.Exits.Any(e => e.Direction == direction && e.LocationId == locationId))
+        {
+            var exit = new Exit
+            {
+                Direction = direction,
+                LocationId = locationId,
+                DestinationLocationId = destinationLocationId
+            };
+            _context.Exits.Add(exit);
+            _context.SaveChanges();
+        }
     }
 
     private Location SeedLocation(string name, string description)

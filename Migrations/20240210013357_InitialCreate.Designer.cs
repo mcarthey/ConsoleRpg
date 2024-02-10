@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsoleRpg.Migrations
 {
     [DbContext(typeof(RpgContext))]
-    [Migration("20240210005323_UpdateQuest")]
-    partial class UpdateQuest
+    [Migration("20240210013357_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,33 @@ namespace ConsoleRpg.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Enemies");
+                });
+
+            modelBuilder.Entity("ConsoleRpg.Entities.Exit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DestinationLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Direction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationLocationId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("Exits");
                 });
 
             modelBuilder.Entity("ConsoleRpg.Entities.Item", b =>
@@ -194,12 +221,12 @@ namespace ConsoleRpg.Migrations
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
 
                     b.Property<int>("RewardExperience")
                         .HasColumnType("int");
@@ -209,31 +236,26 @@ namespace ConsoleRpg.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlayerId");
+                    b.HasIndex("LocationId")
+                        .IsUnique()
+                        .HasFilter("[LocationId] IS NOT NULL");
 
                     b.ToTable("Quests");
                 });
 
-            modelBuilder.Entity("Exit", b =>
+            modelBuilder.Entity("PlayerQuests", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Direction")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LocationId")
+                    b.Property<int>("QuestId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("PlayerId", "QuestId");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("QuestId");
 
-                    b.ToTable("Exit");
+                    b.ToTable("PlayerQuests");
                 });
 
             modelBuilder.Entity("ConsoleRpg.Entities.Enemy", b =>
@@ -243,6 +265,25 @@ namespace ConsoleRpg.Migrations
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("ConsoleRpg.Entities.Exit", b =>
+                {
+                    b.HasOne("ConsoleRpg.Entities.Location", "DestinationLocation")
+                        .WithMany()
+                        .HasForeignKey("DestinationLocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ConsoleRpg.Entities.Location", "Location")
+                        .WithMany("Exits")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DestinationLocation");
 
                     b.Navigation("Location");
                 });
@@ -266,22 +307,26 @@ namespace ConsoleRpg.Migrations
 
             modelBuilder.Entity("ConsoleRpg.Entities.Quest", b =>
                 {
+                    b.HasOne("ConsoleRpg.Entities.Location", "Location")
+                        .WithOne("Quest")
+                        .HasForeignKey("ConsoleRpg.Entities.Quest", "LocationId");
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("PlayerQuests", b =>
+                {
                     b.HasOne("ConsoleRpg.Entities.Player", null)
-                        .WithMany("ActiveQuests")
+                        .WithMany()
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("Exit", b =>
-                {
-                    b.HasOne("ConsoleRpg.Entities.Location", "Location")
-                        .WithMany("Exits")
-                        .HasForeignKey("LocationId")
+                    b.HasOne("ConsoleRpg.Entities.Quest", null)
+                        .WithMany()
+                        .HasForeignKey("QuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("ConsoleRpg.Entities.Location", b =>
@@ -291,6 +336,9 @@ namespace ConsoleRpg.Migrations
                     b.Navigation("Exits");
 
                     b.Navigation("Items");
+
+                    b.Navigation("Quest")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ConsoleRpg.Entities.Merchant", b =>
@@ -300,8 +348,6 @@ namespace ConsoleRpg.Migrations
 
             modelBuilder.Entity("ConsoleRpg.Entities.Player", b =>
                 {
-                    b.Navigation("ActiveQuests");
-
                     b.Navigation("Inventory");
                 });
 #pragma warning restore 612, 618

@@ -10,6 +10,7 @@ public class RpgContext : DbContext
     public DbSet<Item> Items { get; set; }
     public DbSet<Merchant> Merchants { get; set; }
     public DbSet<Location> Locations { get; set; }
+    public DbSet<Exit> Exits { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -34,5 +35,19 @@ public class RpgContext : DbContext
                     .WithMany()
                     .HasForeignKey("PlayerId")
             );
+
+        modelBuilder.Entity<Exit>()
+            .HasOne(e => e.Location)
+            .WithMany(l => l.Exits)
+            .HasForeignKey(e => e.LocationId)
+            .OnDelete(DeleteBehavior.Restrict); // This disables cascading deletes
+
+        modelBuilder.Entity<Exit>()
+            .HasOne(e => e.DestinationLocation)
+            .WithMany()
+            .HasForeignKey(e => e.DestinationLocationId)
+            .OnDelete(DeleteBehavior.Restrict); // This disables cascading deletes
+
+        base.OnModelCreating(modelBuilder);
     }
 }

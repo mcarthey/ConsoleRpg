@@ -33,44 +33,17 @@ public class LocationService
     {
         _currentLocation = newLocation;
         Console.WriteLine($"You have moved to {_currentLocation.Name}");
-        Console.WriteLine(_currentLocation.Description);
-
-        // After moving to the new location, display its contents
-        Console.WriteLine($"You are now in {_currentLocation.Name}");
-        Console.WriteLine(_currentLocation.Description);
-
-        // Display the items in the location
-        if (_currentLocation.Items.Any())
-        {
-            Console.WriteLine("Items in this location:");
-            foreach (var item in _currentLocation.Items)
-            {
-                Console.WriteLine($"{item.Name}: {item.Description}");
-            }
-        }
-        else
-        {
-            Console.WriteLine("There are no items in this location.");
-        }
-
-        // Display the enemies in the location
-        if (_currentLocation.Enemies.Any())
-        {
-            Console.WriteLine("Enemies in this location:");
-            foreach (var enemy in _currentLocation.Enemies)
-            {
-                Console.WriteLine($"{enemy.Name}: {enemy.Description}");
-            }
-        }
-        else
-        {
-            Console.WriteLine("There are no enemies in this location.");
-        }
+        DisplayLocationDetails(_currentLocation);
     }
 
     public void DisplayLocationDetails(Location location)
     {
         Console.WriteLine($"You are now in {location.Name}");
+        DisplayLocationContents(location);
+    }
+
+    private void DisplayLocationContents(Location location)
+    {
         Console.WriteLine(location.Description);
 
         // Display the items in the location
@@ -126,5 +99,4 @@ public class LocationService
             Console.WriteLine("There are no exits from this location.");
         }
     }
-
 }
