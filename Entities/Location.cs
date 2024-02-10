@@ -19,6 +19,7 @@ namespace ConsoleRpg.Entities
         public virtual List<Enemy> Enemies { get; set; }
         public virtual List<Item> Items { get; set; }
         public virtual List<Exit> Exits { get; set; }
+        public virtual Quest Quest { get; set; }
     }
 
 

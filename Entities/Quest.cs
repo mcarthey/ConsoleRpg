@@ -12,6 +12,9 @@
         public bool IsCompleted { get; set; }
 
         public virtual List<Player> Players { get; set; }
+
+        public int? LocationId { get; set; }
+        public virtual Location Location { get; set; }
     }
 
 }

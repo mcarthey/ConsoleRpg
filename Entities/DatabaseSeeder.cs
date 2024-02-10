@@ -24,8 +24,8 @@ public class DatabaseSeeder
         var dragon = SeedEnemy("Dragon", "A large, fire-breathing beast.", 100, 20, 50, secondLocation.Id);
 
         // Seed Quests
-        var quest1 = SeedQuest("Quest 1", "This is the first quest.", 100, 50);
-        var quest2 = SeedQuest("Quest 2", "This is the second quest.", 200, 100);
+        var quest1 = SeedQuest("Quest 1", "This is the first quest.", 100, 50, startingLocation.Id);
+        var quest2 = SeedQuest("Quest 2", "This is the second quest.", 200, 100, secondLocation.Id);
 
         // Seed Merchants
         var merchant = SeedMerchant("John the Merchant");
@@ -106,7 +106,7 @@ public class DatabaseSeeder
         return _context.Merchants.First(m => m.Name == name);
     }
 
-    private Quest SeedQuest(string name, string description, int rewardExperience, int rewardGold)
+    private Quest SeedQuest(string name, string description, int rewardExperience, int rewardGold, int locationId)
     {
         if (!_context.Quests.Any(q => q.Name == name))
         {
@@ -115,7 +115,8 @@ public class DatabaseSeeder
                 Name = name,
                 Description = description,
                 RewardExperience = rewardExperience,
-                RewardGold = rewardGold
+                RewardGold = rewardGold,
+                LocationId = locationId
             };
             _context.Quests.Add(quest);
             _context.SaveChanges();
@@ -123,6 +124,7 @@ public class DatabaseSeeder
         }
         return _context.Quests.First(q => q.Name == name);
     }
+
 
 
     private void AssignItemToMerchant(Item item, int merchantId)

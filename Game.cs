@@ -25,8 +25,10 @@ public class Game
     {
         var startingLocation = _locationService.GetStartingLocation();
         Console.WriteLine("Welcome to the Text RPG!");
-        Console.WriteLine($"You are currently in {startingLocation.Name}");
-        Console.WriteLine(startingLocation.Description);
+        _locationService.DisplayLocationDetails(startingLocation);
+
+        //Console.WriteLine($"You are currently in {startingLocation.Name}");
+        //Console.WriteLine(startingLocation.Description);
         while (true)
         {
             Console.WriteLine("What would you like to do?");
@@ -45,7 +47,19 @@ public class Game
             switch (choice)
             {
                 case "1":
-                    _locationService.Move();
+                    var locations = _locationService.GetAllLocations();
+                    Console.WriteLine("Where would you like to move?");
+                    for (int i = 0; i < locations.Count; i++)
+                    {
+                        Console.WriteLine($"{i + 1}. {locations[i].Name}");
+                    }
+                    string? locationChoiceString = Console.ReadLine();
+                    if (locationChoiceString == null)
+                    {
+                        throw new Exception("Failed to read choice.");
+                    }
+                    int locationChoice = int.Parse(locationChoiceString);
+                    _locationService.Move(locations[locationChoice - 1]);
                     break;
                 case "2":
                     _playerService.ShowInventory();

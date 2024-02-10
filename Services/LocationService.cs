@@ -24,34 +24,16 @@ public class LocationService
         return _currentLocation;
     }
 
-
-    public void Move()
+    public List<Location> GetAllLocations()
     {
-        Console.WriteLine("Available exits:");
-        foreach (var exit in _currentLocation.Exits)
-        {
-            Console.WriteLine(exit.Direction);
-        }
+        return _context.Locations.ToList();
+    }
 
-        Console.Write("Enter direction to move: ");
-        string direction = Console.ReadLine();
-        if (direction == null)
-        {
-            throw new Exception("Failed to read direction.");
-        }
-        direction = direction.ToLower();
-
-        var chosenExit = _currentLocation.Exits.FirstOrDefault(e => e.Direction == direction);
-        if (chosenExit != null)
-        {
-            _currentLocation = chosenExit.Location;
-            Console.WriteLine($"You have moved to {_currentLocation.Name}");
-            Console.WriteLine(_currentLocation.Description);
-        }
-        else
-        {
-            Console.WriteLine("Invalid direction.");
-        }
+    public void Move(Location newLocation)
+    {
+        _currentLocation = newLocation;
+        Console.WriteLine($"You have moved to {_currentLocation.Name}");
+        Console.WriteLine(_currentLocation.Description);
 
         // After moving to the new location, display its contents
         Console.WriteLine($"You are now in {_currentLocation.Name}");
@@ -85,4 +67,64 @@ public class LocationService
             Console.WriteLine("There are no enemies in this location.");
         }
     }
+
+    public void DisplayLocationDetails(Location location)
+    {
+        Console.WriteLine($"You are now in {location.Name}");
+        Console.WriteLine(location.Description);
+
+        // Display the items in the location
+        if (location.Items.Any())
+        {
+            Console.WriteLine("Items in this location:");
+            foreach (var item in location.Items)
+            {
+                Console.WriteLine($"{item.Name}: {item.Description}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("There are no items in this location.");
+        }
+
+        // Display the enemies in the location
+        if (location.Enemies.Any())
+        {
+            Console.WriteLine("Enemies in this location:");
+            foreach (var enemy in location.Enemies)
+            {
+                Console.WriteLine($"{enemy.Name}: {enemy.Description}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("There are no enemies in this location.");
+        }
+
+        // Display the quest in the location
+        if (location.Quest != null)
+        {
+            Console.WriteLine("Quest in this location:");
+            Console.WriteLine($"{location.Quest.Name}: {location.Quest.Description}");
+        }
+        else
+        {
+            Console.WriteLine("There is no quest in this location.");
+        }
+
+        // Display the exits in the location
+        if (location.Exits.Any())
+        {
+            Console.WriteLine("Exits from this location:");
+            foreach (var exit in location.Exits)
+            {
+                Console.WriteLine(exit.Direction);
+            }
+        }
+        else
+        {
+            Console.WriteLine("There are no exits from this location.");
+        }
+    }
+
 }
