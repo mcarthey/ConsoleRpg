@@ -6,7 +6,12 @@ public class CombatService
 {
     private const int DamageRandomness = 10;
     private Random _random = new Random();
+    private readonly PlayerService _playerService;
 
+    public CombatService(PlayerService playerService)
+    {
+        _playerService = playerService;
+    }
     public void Combat(Player player, Enemy enemy)
     {
         while (player.Health > 0 && enemy.Health > 0)
@@ -23,6 +28,7 @@ public class CombatService
             if (player.Health <= 0)
             {
                 Console.WriteLine("Player defeated!");
+                _playerService.ResetPlayer(player);
                 break;
             }
         }

@@ -66,6 +66,16 @@ public class PlayerService
         }
     }
 
+    public void ResetPlayer(Player player)
+    {
+        player.Health = 100; // Reset health to initial value
+        player.Gold = 0; // Reset gold to initial value
+        player.Inventory.Clear(); // Clear inventory
+        // Reset other attributes as needed...
+
+        _context.SaveChanges(); // Save changes to the database
+    }
+
     public void ViewCurrentQuests()
     {
         Console.ForegroundColor = ConsoleColor.Blue;
