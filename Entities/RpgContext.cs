@@ -4,13 +4,13 @@ namespace ConsoleRpg.Entities;
 
 public class RpgContext : DbContext
 {
-    public DbSet<Player> Players { get; set; }
     public DbSet<Enemy> Enemies { get; set; }
-    public DbSet<Quest> Quests { get; set; }
-    public DbSet<Item> Items { get; set; }
-    public DbSet<Merchant> Merchants { get; set; }
-    public DbSet<Location> Locations { get; set; }
     public DbSet<Exit> Exits { get; set; }
+    public DbSet<Item> Items { get; set; }
+    public DbSet<Location> Locations { get; set; }
+    public DbSet<Merchant> Merchants { get; set; }
+    public DbSet<Player> Players { get; set; }
+    public DbSet<Quest> Quests { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

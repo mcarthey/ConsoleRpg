@@ -2,16 +2,13 @@
 
 namespace ConsoleRpg;
 
-class Program
+internal class Program
 {
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         var seeder = new DatabaseSeeder(new RpgContext());
         seeder.SeedDatabase();
         var game = new Game();
         game.Start();
-
     }
-
-
 }

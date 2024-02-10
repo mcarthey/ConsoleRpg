@@ -1,17 +1,16 @@
 ﻿using ConsoleRpg.Entities;
 using ConsoleRpg.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace ConsoleRpg;
 
 public class Game
 {
-    private RpgContext _context;
-    private PlayerService _playerService;
-    private LocationService _locationService;
-    private MerchantService _merchantService;
-    private CombatService _combatService;
     private readonly QuestService _questService;
+    private readonly CombatService _combatService;
+    private readonly RpgContext _context;
+    private readonly LocationService _locationService;
+    private readonly MerchantService _merchantService;
+    private readonly PlayerService _playerService;
 
     public Game()
     {
@@ -44,11 +43,12 @@ public class Game
             Console.WriteLine("7. Quit\n");
             Console.ResetColor();
 
-            string? choice = Console.ReadLine();
+            var choice = Console.ReadLine();
             if (choice == null)
             {
                 throw new Exception("Failed to read choice.");
             }
+
             switch (choice)
             {
                 case "1":
@@ -98,5 +98,4 @@ public class Game
         _playerService.SavePlayer();
         Environment.Exit(0);
     }
-
 }

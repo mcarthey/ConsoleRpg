@@ -2,7 +2,7 @@ namespace ConsoleRpg.Entities;
 
 public class DatabaseSeeder
 {
-    private RpgContext _context;
+    private readonly RpgContext _context;
 
     public DatabaseSeeder(RpgContext context)
     {
@@ -41,53 +41,10 @@ public class DatabaseSeeder
         _context.SaveChanges();
     }
 
-    private void SeedExit(string direction, int locationId, int destinationLocationId)
+    private void AssignItemToMerchant(Item item, int merchantId)
     {
-        if (!_context.Exits.Any(e => e.Direction == direction && e.LocationId == locationId))
-        {
-            var exit = new Exit
-            {
-                Direction = direction,
-                LocationId = locationId,
-                DestinationLocationId = destinationLocationId
-            };
-            _context.Exits.Add(exit);
-            _context.SaveChanges();
-        }
-    }
-
-    private Location SeedLocation(string name, string description)
-    {
-        if (!_context.Locations.Any(l => l.Name == name))
-        {
-            var location = new Location
-            {
-                Name = name,
-                Description = description
-            };
-            _context.Locations.Add(location);
-            _context.SaveChanges();
-            return location;
-        }
-        return _context.Locations.First(l => l.Name == name);
-    }
-
-    private Item SeedItem(string name, string description, int cost, int locationId)
-    {
-        if (!_context.Items.Any(i => i.Name == name))
-        {
-            var item = new Item
-            {
-                Name = name,
-                Description = description,
-                Cost = cost,
-                LocationId = locationId
-            };
-            _context.Items.Add(item);
-            _context.SaveChanges();
-            return item;
-        }
-        return _context.Items.First(i => i.Name == name);
+        item.MerchantId = merchantId;
+        _context.SaveChanges();
     }
 
     private Enemy SeedEnemy(string name, string description, int health, int damage, int experience, int locationId)
@@ -107,7 +64,59 @@ public class DatabaseSeeder
             _context.SaveChanges();
             return enemy;
         }
+
         return _context.Enemies.First(e => e.Name == name);
+    }
+
+    private void SeedExit(string direction, int locationId, int destinationLocationId)
+    {
+        if (!_context.Exits.Any(e => e.Direction == direction && e.LocationId == locationId))
+        {
+            var exit = new Exit
+            {
+                Direction = direction,
+                LocationId = locationId,
+                DestinationLocationId = destinationLocationId
+            };
+            _context.Exits.Add(exit);
+            _context.SaveChanges();
+        }
+    }
+
+    private Item SeedItem(string name, string description, int cost, int locationId)
+    {
+        if (!_context.Items.Any(i => i.Name == name))
+        {
+            var item = new Item
+            {
+                Name = name,
+                Description = description,
+                Cost = cost,
+                LocationId = locationId
+            };
+            _context.Items.Add(item);
+            _context.SaveChanges();
+            return item;
+        }
+
+        return _context.Items.First(i => i.Name == name);
+    }
+
+    private Location SeedLocation(string name, string description)
+    {
+        if (!_context.Locations.Any(l => l.Name == name))
+        {
+            var location = new Location
+            {
+                Name = name,
+                Description = description
+            };
+            _context.Locations.Add(location);
+            _context.SaveChanges();
+            return location;
+        }
+
+        return _context.Locations.First(l => l.Name == name);
     }
 
     private Merchant SeedMerchant(string name)
@@ -122,6 +131,7 @@ public class DatabaseSeeder
             _context.SaveChanges();
             return merchant;
         }
+
         return _context.Merchants.First(m => m.Name == name);
     }
 
@@ -141,14 +151,7 @@ public class DatabaseSeeder
             _context.SaveChanges();
             return quest;
         }
+
         return _context.Quests.First(q => q.Name == name);
-    }
-
-
-
-    private void AssignItemToMerchant(Item item, int merchantId)
-    {
-        item.MerchantId = merchantId;
-        _context.SaveChanges();
     }
 }

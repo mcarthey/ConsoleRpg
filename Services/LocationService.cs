@@ -4,41 +4,13 @@ namespace ConsoleRpg.Services;
 
 public class LocationService
 {
-    private RpgContext _context;
+    private readonly RpgContext _context;
     private Location _currentLocation;
 
     public LocationService(RpgContext context)
     {
         _context = context;
         _currentLocation = GetStartingLocation();
-    }
-
-    // GetStartingLocation, Move methods go here...
-    public Location GetStartingLocation()
-    {
-        return _context.Locations.FirstOrDefault() ?? throw new Exception("No starting location found.");
-    }
-
-    public Quest GetQuestInCurrentLocation()
-    {
-        return _currentLocation.Quest;
-    }
-
-    public Location GetCurrentLocation()
-    {
-        return _currentLocation;
-    }
-
-    public List<Location> GetAllLocations()
-    {
-        return _context.Locations.ToList();
-    }
-
-    public void Move(Location newLocation)
-    {
-        _currentLocation = newLocation;
-        Console.WriteLine($"You have moved to {_currentLocation.Name}");
-        DisplayLocationDetails(_currentLocation);
     }
 
     public void DisplayLocationDetails(Location location)
@@ -49,24 +21,52 @@ public class LocationService
         DisplayLocationContents(location);
     }
 
+    public List<Location> GetAllLocations()
+    {
+        return _context.Locations.ToList();
+    }
+
+    public Location GetCurrentLocation()
+    {
+        return _currentLocation;
+    }
+
+    public Quest GetQuestInCurrentLocation()
+    {
+        return _currentLocation.Quest;
+    }
+
+    // GetStartingLocation, Move methods go here...
+    public Location GetStartingLocation()
+    {
+        return _context.Locations.FirstOrDefault() ?? throw new Exception("No starting location found.");
+    }
+
+    public void Move(Location newLocation)
+    {
+        _currentLocation = newLocation;
+        Console.WriteLine($"You have moved to {_currentLocation.Name}");
+        DisplayLocationDetails(_currentLocation);
+    }
+
     public void MoveToLocation()
     {
         var locations = GetAllLocations();
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("Where would you like to move?");
         Console.ResetColor();
-        for (int i = 0; i < locations.Count; i++)
+        for (var i = 0; i < locations.Count; i++)
         {
             Console.WriteLine($"{i + 1}. {locations[i].Name}");
         }
 
-        string? locationChoiceString = Console.ReadLine();
+        var locationChoiceString = Console.ReadLine();
         if (locationChoiceString == null)
         {
             throw new Exception("Failed to read choice.");
         }
 
-        int locationChoice = int.Parse(locationChoiceString);
+        var locationChoice = int.Parse(locationChoiceString);
         Move(locations[locationChoice - 1]);
     }
 
@@ -139,5 +139,4 @@ public class LocationService
 
         Console.WriteLine("-------------------------\n");
     }
-
 }
