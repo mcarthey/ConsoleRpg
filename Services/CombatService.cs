@@ -8,6 +8,7 @@ public class CombatService
     private readonly PlayerService _playerService;
     private readonly Random _random = new();
     private readonly LocationService _locationService;
+    private readonly object _lock = new object();
 
     public CombatService(PlayerService playerService, LocationService locationService)
     {
@@ -22,12 +23,16 @@ public class CombatService
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Attacking enemies...");
         Console.ResetColor();
-        var enemies = currentLocation.Enemies.ToList(); // Create a copy of the collection
-        foreach (var enemy in enemies)
+        lock (_lock)
         {
-            Combat(player, enemy);
+            var enemies = new List<Enemy>(currentLocation.Enemies);
+            foreach (var enemy in enemies)
+            {
+                Combat(player, enemy);
+            }
         }
     }
+
 
     private void RespawnEnemy(Enemy enemy)
     {

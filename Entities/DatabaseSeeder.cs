@@ -65,16 +65,31 @@ public class DatabaseSeeder
     }
     private LootTable SeedLootTable(List<Item> items, Enemy enemy)
     {
-        var lootTable = new LootTable();
+        var enemyId = enemy.Id;
+        LootTable lootTable;
+
+        if (_context.LootTables.Any(lt => lt.EnemyId == enemyId))
+        {
+            // LootTable already exists for this Enemy, update it
+            lootTable = _context.LootTables.First(lt => lt.EnemyId == enemyId);
+            lootTable.Items.Clear(); // Clear existing items before adding new ones
+        }
+        else
+        {
+            // LootTable does not exist for this Enemy, create it
+            lootTable = new LootTable { EnemyId = enemyId };
+            _context.LootTables.Add(lootTable);
+        }
+
         foreach (var item in items)
         {
             lootTable.Items.Add(item);
         }
-        lootTable.Enemy = enemy; // Associate the LootTable with the Enemy
-        _context.LootTables.Add(lootTable);
+
         _context.SaveChanges();
         return lootTable;
     }
+
 
     private Npc SeedNpc(string name)
     {
