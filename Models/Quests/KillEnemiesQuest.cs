@@ -14,7 +14,7 @@ namespace ConsoleRpg.Models.Quests
 
         public override void DisplayProgress()
         {
-            Console.WriteLine($"Kill count progress: {KillCountProgress}/{KillCount}");
+            CustomConsole.Info($"Kill count progress: {KillCountProgress}/{KillCount}");
         }
     }
 }

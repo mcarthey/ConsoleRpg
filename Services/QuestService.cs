@@ -1,5 +1,6 @@
 using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
+using Spectre.Console;
 
 namespace ConsoleRpg.Services;
 
@@ -26,7 +27,7 @@ public class QuestService
         var player = _playerService.GetPlayer();
         if (quest.KillCount > 0 && quest.KillCountProgress < quest.KillCount)
         {
-            Console.WriteLine("You have not killed enough enemies to complete this quest.");
+            CustomConsole.Info("You have not killed enough enemies to complete this quest.");
             return;
         }
 
@@ -49,15 +50,11 @@ public class QuestService
         if (quest != null)
         {
             AddQuest(quest);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\nYou have picked up a new quest: {quest.Name}\n");
-            Console.ResetColor();
+            CustomConsole.Notice($"\nYou have picked up a new quest: {quest.Name}\n");
         }
         else
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nThere is no quest to pick up in this location.\n");
-            Console.ResetColor();
+            CustomConsole.Notice("\nThere is no quest to pick up in this location.\n");
         }
     }
 }

@@ -1,6 +1,7 @@
 using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
 using ConsoleRpg.Models.Items;
+using Spectre.Console;
 
 namespace ConsoleRpg.Services;
 
@@ -19,9 +20,7 @@ public class MerchantService
 
     public void DisplayVisitMessage()
     {
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine("Visiting the merchant...");
-        Console.ResetColor();
+        CustomConsole.Notice("Visiting the merchant...");
         VisitMerchant();
     }
 
@@ -34,16 +33,16 @@ public class MerchantService
     public void VisitMerchant()
     {
         var player = _playerService.GetPlayer();
-        Console.WriteLine($"Welcome to {_merchant.Name}'s shop!");
-        Console.WriteLine($"You currently have {player.Gold} gold.");
+        CustomConsole.Info($"Welcome to {_merchant.Name}'s shop!");
+        CustomConsole.Info($"You currently have {player.Gold} gold.");
 
-        Console.WriteLine("Available items:");
+        CustomConsole.Info("Available items:");
         foreach (var item in _merchant.Inventory)
         {
-            Console.WriteLine($"{item.Name}: {item.Description}, Cost: {item.Cost} gold");
+            CustomConsole.Info($"{item.Name}: {item.Description}, Cost: {item.Cost} gold");
         }
 
-        Console.WriteLine("What would you like to buy? (Enter item name or 'exit' to leave)");
+        CustomConsole.Info("What would you like to buy? (Enter item name or 'exit' to leave)");
         var itemName = Console.ReadLine();
         if (itemName == null)
         {
@@ -63,19 +62,19 @@ public class MerchantService
 
         if (selectedItem == null)
         {
-            Console.WriteLine("Item not found.");
+            CustomConsole.Info("Item not found.");
             return;
         }
 
         if (player.Gold < selectedItem.Cost)
         {
-            Console.WriteLine("Not enough gold to purchase this item.");
+            CustomConsole.Info("Not enough gold to purchase this item.");
             return;
         }
 
         player.Gold -= selectedItem.Cost;
         player.Inventory.Add(selectedItem);
         _context.SaveChanges(); // Save changes after buying an item
-        Console.WriteLine($"You purchased {selectedItem.Name}.");
+        CustomConsole.Info($"You purchased {selectedItem.Name}.");
     }
 }

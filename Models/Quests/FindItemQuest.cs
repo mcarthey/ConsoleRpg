@@ -8,6 +8,6 @@ public class FindItemQuest : Quest
 
     public override void DisplayProgress()
     {
-        Console.WriteLine($"Target item: {TargetItem}");
+        CustomConsole.Info($"Target item: {TargetItem}");
     }
 }

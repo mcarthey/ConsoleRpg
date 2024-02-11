@@ -1,5 +1,6 @@
 ﻿using ConsoleRpg.Entities;
 using ConsoleRpg.Services;
+using Spectre.Console;
 
 namespace ConsoleRpg;
 
@@ -23,29 +24,21 @@ public class Game
     public void Start()
     {
         var startingLocation = _locationService.GetStartingLocation();
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("\nWelcome to the Text RPG!\n");
-        Console.ResetColor();
+        CustomConsole.Notice("\nWelcome to the Text RPG!\n");
         _locationService.DisplayLocationDetails(startingLocation);
 
         while (true)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\nWhat would you like to do?");
-            Console.WriteLine("1. Move to another location");
-            Console.WriteLine("2. Check inventory");
-            Console.WriteLine("3. Attack enemies");
-            Console.WriteLine("4. Visit the merchant");
-            Console.WriteLine("5. View current quests");
-            Console.WriteLine("6. Pick up quest");
-            Console.WriteLine("7. Quit\n");
-            Console.ResetColor();
+            CustomConsole.Info("\nWhat would you like to do?");
+            CustomConsole.Prompt("1. Move to another location");
+            CustomConsole.Prompt("2. Check inventory");
+            CustomConsole.Prompt("3. Attack enemies");
+            CustomConsole.Prompt("4. Visit the merchant");
+            CustomConsole.Prompt("5. View current quests");
+            CustomConsole.Prompt("6. Pick up quest");
+            CustomConsole.Prompt("7. Quit\n");
 
-            var choice = Console.ReadLine();
-            if (choice == null)
-            {
-                throw new Exception("Failed to read choice.");
-            }
+            var choice = AnsiConsole.Ask<string>("");
 
             switch (choice)
             {
@@ -81,16 +74,12 @@ public class Game
 
     private static void InvalidChoice()
     {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Invalid choice. Please try again.");
-        Console.ResetColor();
+        CustomConsole.Warn("Invalid choice. Please try again.");
     }
 
     private void SavePlayerAndQuit()
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("Saving player and quitting game...");
-        Console.ResetColor();
+        CustomConsole.Notice("Saving player and quitting game...");
         _playerService.SavePlayer();
         Environment.Exit(0);
     }

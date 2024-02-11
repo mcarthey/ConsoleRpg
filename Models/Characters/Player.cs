@@ -18,7 +18,7 @@ namespace ConsoleRpg.Models.Characters
         public void GainExperience(int amount)
         {
             Experience += amount;
-            Console.WriteLine($"Player gains {amount} experience points.");
+            CustomConsole.Info($"Player gains {amount} experience points.");
         }
     }
 }

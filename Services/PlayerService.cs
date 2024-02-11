@@ -1,6 +1,7 @@
 using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
 using ConsoleRpg.Models.Characters;
+using Spectre.Console;
 
 namespace ConsoleRpg.Services;
 
@@ -34,10 +35,8 @@ public class PlayerService
         player.Inventory.Clear(); // Clear inventory
         // Reset other attributes as needed...
 
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("You have died... upsetting but resetting");
-        Console.ResetColor();
-
+        CustomConsole.Error("You have died... upsetting but resetting");
+   
         _context.SaveChanges(); // Save changes to the database
     }
 
@@ -53,14 +52,14 @@ public class PlayerService
 
         if (activeQuests.Count == 0)
         {
-            Console.WriteLine("You have no active quests.");
+            CustomConsole.Info("You have no active quests.");
         }
         else
         {
-            Console.WriteLine("Your active quests:");
+            CustomConsole.Notice("Your active quests:");
             foreach (var quest in activeQuests)
             {
-                Console.WriteLine($"{quest.Name}: {quest.Description}");
+                CustomConsole.Info($"{quest.Name}: {quest.Description}");
                 quest.DisplayProgress();
             }
         }
@@ -73,9 +72,7 @@ public class PlayerService
 
     public void ViewCurrentQuests()
     {
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine("Viewing current quests...");
-        Console.ResetColor();
+        CustomConsole.Notice("Viewing current quests...");
         ShowActiveQuests();
     }
 

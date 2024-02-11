@@ -3,6 +3,7 @@ using ConsoleRpg.Entities;
 using ConsoleRpg.Models.Characters;
 using ConsoleRpg.Models.Items;
 using Microsoft.EntityFrameworkCore;
+using Spectre.Console;
 
 namespace ConsoleRpg.Services;
 
@@ -33,9 +34,7 @@ public class CombatService
     public void AttackEnemies(Location currentLocation)
     {
         var player = _playerService.GetPlayer();
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Attacking enemies...");
-        Console.ResetColor();
+        CustomConsole.Info($"Attacking enemies at {currentLocation.Name}...");
         lock (_lock)
         {
             var enemies = new List<Enemy>(currentLocation.Enemies);
@@ -60,7 +59,7 @@ public class CombatService
             Attack(player, enemy);
             if (enemy.Health <= 0)
             {
-                Console.WriteLine("Enemy defeated!");
+                CustomConsole.Highlight("Enemy defeated!");
                 player.GainExperience(enemy.Experience);
                 UpdateQuestProgress(enemy);
                 DropLoot(player, enemy);
@@ -71,7 +70,7 @@ public class CombatService
             Attack(enemy, player);
             if (player.Health <= 0)
             {
-                Console.WriteLine("Player defeated!");
+                CustomConsole.Warn("Player defeated!");
                 _playerService.ResetPlayer(player);
                 break;
             }
@@ -80,7 +79,7 @@ public class CombatService
     public void DropLoot(Player player, Enemy enemy)
     {
         var loot = GetRandomItemFromLootTable(enemy.LootTable);
-        Console.WriteLine($"Enemy dropped {loot.Name}!");
+        CustomConsole.Notice($"Enemy dropped {loot.Name}!");
         if (loot is Sword)
         {
             player.Swords.Add((Sword)loot);
@@ -123,8 +122,8 @@ public class CombatService
     {
         var damage = CalculateDamage(attacker.Attack);
         defender.Health -= damage;
-        Console.WriteLine($"{attacker.Name} attacks and deals {damage} damage to {defender.Name}.");
-        Console.WriteLine($"{defender.Name} has {defender.Health} health remaining.");
+        CustomConsole.Highlight($"{attacker.Name} attacks and deals {damage} damage to {defender.Name}.");
+        CustomConsole.Highlight($"{defender.Name} has {defender.Health} health remaining.");
     }
 
     private int CalculateDamage(int attackPower)

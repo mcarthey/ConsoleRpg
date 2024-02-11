@@ -8,6 +8,6 @@ public class FindNpcQuest : Quest
 
     public override void DisplayProgress()
     {
-        Console.WriteLine($"Target NPC: {TargetNpc}");
+        CustomConsole.Info($"Target NPC: {TargetNpc}");
     }
 }

@@ -8,6 +8,6 @@ public class FindLocationQuest : Quest
 
     public override void DisplayProgress()
     {
-        Console.WriteLine($"Target location: {TargetLocation}");
+        CustomConsole.Info($"Target location: {TargetLocation}");
     }
 }

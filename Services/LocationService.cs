@@ -1,5 +1,6 @@
 using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
+using Spectre.Console;
 
 namespace ConsoleRpg.Services;
 
@@ -16,9 +17,7 @@ public class LocationService
 
     public void DisplayLocationDetails(Location location)
     {
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine($"You are now in {location.Name}");
-        Console.ResetColor();
+        CustomConsole.Notice($"You are now in {location.Name}");
         DisplayLocationContents(location);
     }
 
@@ -46,7 +45,7 @@ public class LocationService
     public void Move(Location newLocation)
     {
         _currentLocation = newLocation;
-        Console.WriteLine($"You have moved to {_currentLocation.Name}");
+        CustomConsole.Info($"You have moved to {_currentLocation.Name}");
         DisplayLocationDetails(_currentLocation);
     }
 
@@ -60,12 +59,10 @@ public class LocationService
     public void MoveToLocation()
     {
         var locations = GetAllLocations();
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Where would you like to move?");
-        Console.ResetColor();
+        CustomConsole.Prompt("Where would you like to move?");
         for (var i = 0; i < locations.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {locations[i].Name}");
+            CustomConsole.Info($"{i + 1}. {locations[i].Name}");
         }
 
         var locationChoiceString = Console.ReadLine();
@@ -80,24 +77,22 @@ public class LocationService
 
     private void DisplayLocationContents(Location location)
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("\n-------------------------");
-        Console.WriteLine($"Location: {location.Name}\n");
-        Console.WriteLine($"{location.Description}\n");
+        CustomConsole.Info("\n-------------------------");
+        CustomConsole.Info($"{location.Description}\n");
         Console.ResetColor();
 
         // Display the items in the location
         if (location.Items.Any())
         {
-            Console.WriteLine("Items in this location:");
+            CustomConsole.Notice("Items in this location:");
             foreach (var item in location.Items)
             {
-                Console.WriteLine($"- {item.Name}: {item.Description}");
+                CustomConsole.Info($"- {item.Name}: {item.Description}");
             }
         }
         else
         {
-            Console.WriteLine("There are no items in this location.");
+            CustomConsole.Notice("There are no items in this location.");
         }
 
         Console.WriteLine();
@@ -105,15 +100,15 @@ public class LocationService
         // Display the enemies in the location
         if (location.Enemies.Any())
         {
-            Console.WriteLine("Enemies in this location:");
+            CustomConsole.Notice("Enemies in this location:");
             foreach (var enemy in location.Enemies)
             {
-                Console.WriteLine($"- {enemy.Name}: {enemy.Description}");
+                CustomConsole.Info($"- {enemy.Name}: {enemy.Description}");
             }
         }
         else
         {
-            Console.WriteLine("There are no enemies in this location.");
+            CustomConsole.Notice("There are no enemies in this location.");
         }
 
         Console.WriteLine();
@@ -121,12 +116,12 @@ public class LocationService
         // Display the quest in the location
         if (location.Quest != null)
         {
-            Console.WriteLine("Quest in this location:");
-            Console.WriteLine($"- {location.Quest.Name}: {location.Quest.Description}");
+            CustomConsole.Notice("Quest in this location:");
+            CustomConsole.Info($"- {location.Quest.Name}: {location.Quest.Description}");
         }
         else
         {
-            Console.WriteLine("There is no quest in this location.");
+            CustomConsole.Notice("There is no quest in this location.");
         }
 
         Console.WriteLine();
@@ -134,17 +129,17 @@ public class LocationService
         // Display the exits in the location
         if (location.Exits.Any())
         {
-            Console.WriteLine("Exits from this location:");
+            CustomConsole.Notice("Exits from this location:");
             foreach (var exit in location.Exits)
             {
-                Console.WriteLine($"- {exit.Direction}");
+                CustomConsole.Info($"- {exit.Direction}");
             }
         }
         else
         {
-            Console.WriteLine("There are no exits from this location.");
+            CustomConsole.Notice("There are no exits from this location.");
         }
 
-        Console.WriteLine("-------------------------\n");
+        CustomConsole.Info("-------------------------\n");
     }
 }

@@ -5,17 +5,17 @@ public class InventoryService
 {
     public void DisplayInventory(Player player)
     {
-        Console.WriteLine("Inventory:");
+        CustomConsole.Info("Inventory:");
         foreach (var item in player.Inventory)
         {
-            Console.WriteLine($"{item.Name}: {item.Description}");
+            CustomConsole.Info($"{item.Name}: {item.Description}");
         }
     }
 
     public void AddItemToInventory(Player player, Item item)
     {
         player.Inventory.Add(item);
-        Console.WriteLine($"{item.Name} has been added to your inventory.");
+        CustomConsole.Info($"{item.Name} has been added to your inventory.");
     }
 
     public void RemoveItemFromInventory(Player player, Item item)
@@ -23,11 +23,11 @@ public class InventoryService
         if (player.Inventory.Contains(item))
         {
             player.Inventory.Remove(item);
-            Console.WriteLine($"{item.Name} has been removed from your inventory.");
+            CustomConsole.Info($"{item.Name} has been removed from your inventory.");
         }
         else
         {
-            Console.WriteLine($"{item.Name} is not in your inventory.");
+            CustomConsole.Info($"{item.Name} is not in your inventory.");
         }
     }
 }
