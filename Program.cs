@@ -16,24 +16,25 @@ namespace ConsoleRpg
             // Create service provider
             ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-            // Create a new scope
-            using (var scope = serviceProvider.CreateScope())
+            try
             {
-                var services = scope.ServiceProvider;
-                try
+                // Create a new scope
+                using (var scope = serviceProvider.CreateScope())
                 {
+                    var services = scope.ServiceProvider;
+
                     // Seed database
                     var seeder = services.GetRequiredService<DatabaseSeeder>();
                     seeder.SeedDatabase();
 
-                    // Start game 
+                    // Start game
                     services.GetRequiredService<Game>().Start();
                 }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred while seeding the database.");
-                }
+            }
+            catch (Exception ex)
+            {
+                var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An unhandled exception occurred.");
             }
         }
     }
