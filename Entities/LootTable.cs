@@ -1,4 +1,6 @@
-using ConsoleRpg.Entities;
+using ConsoleRpg.Models.Characters;
+
+namespace ConsoleRpg.Entities;
 
 public class LootTable
 {
@@ -7,10 +9,4 @@ public class LootTable
     public int? EnemyId { get; set; } // Foreign key property
     public virtual Enemy Enemy { get; set; } // Navigation property
 
-    public Item GetRandomItem()
-    {
-        Random random = new Random();
-        int index = random.Next(Items.Count);
-        return Items.ElementAt(index);
-    }
 }

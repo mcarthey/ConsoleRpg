@@ -1,4 +1,6 @@
+using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
+using ConsoleRpg.Models.Characters;
 
 namespace ConsoleRpg.Services;
 
@@ -6,19 +8,18 @@ public class PlayerService
 {
     private readonly RpgContext _context;
     private readonly Player _player;
+    private readonly InventoryService _inventoryService;
 
-    public PlayerService(RpgContext context)
+    public PlayerService(RpgContext context, InventoryService inventoryService)
     {
         _context = context;
         _player = LoadOrCreatePlayer();
+        _inventoryService = inventoryService;
     }
 
     public void CheckInventory()
     {
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Checking inventory...");
-        Console.ResetColor();
-        ShowInventory();
+        _inventoryService.DisplayInventory(_player);
     }
 
     public Player GetPlayer()
@@ -48,14 +49,16 @@ public class PlayerService
     public void ShowActiveQuests()
     {
         var player = GetPlayer();
-        if (player.ActiveQuests.Count == 0)
+        var activeQuests = _context.Quests.Where(q => q.Players.Any(p => p.Id == player.Id) && !q.IsCompleted).ToList();
+
+        if (activeQuests.Count == 0)
         {
             Console.WriteLine("You have no active quests.");
         }
         else
         {
             Console.WriteLine("Your active quests:");
-            foreach (var quest in player.ActiveQuests)
+            foreach (var quest in activeQuests)
             {
                 Console.WriteLine($"{quest.Name}: {quest.Description}");
                 quest.DisplayProgress();
@@ -65,11 +68,7 @@ public class PlayerService
 
     public void ShowInventory()
     {
-        Console.WriteLine("Inventory:");
-        foreach (var item in _player.Inventory)
-        {
-            Console.WriteLine($"{item.Name}: {item.Description}");
-        }
+        _inventoryService.DisplayInventory(_player);
     }
 
     public void ViewCurrentQuests()

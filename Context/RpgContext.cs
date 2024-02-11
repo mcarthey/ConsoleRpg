@@ -1,24 +1,39 @@
-﻿using ConsoleRpg.Models.Quests;
+﻿using ConsoleRpg.Entities;
+using ConsoleRpg.Models.Characters;
+using ConsoleRpg.Models.Items;
+using ConsoleRpg.Models.Quests;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConsoleRpg.Entities;
+namespace ConsoleRpg.Context;
 
 public class RpgContext : DbContext
 {
-    public DbSet<Enemy> Enemies { get; set; }
     public DbSet<Exit> Exits { get; set; }
-    public DbSet<Item> Items { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Merchant> Merchants { get; set; }
-    public DbSet<Player> Players { get; set; }
+    public DbSet<LootTable> LootTables { get; set; }
+    public DbSet<Npc> Npcs { get; set; }
+    public DbSet<DialogueOption> DialogueOptions { get; set; }
 
+    // Characters
+    public DbSet<Character> Characters { get; set; }
+    public DbSet<Player> Players { get; set; }
+    public DbSet<Enemy> Enemies { get; set; }
+
+    // Quests
+    public DbSet<Quest> Quests { get; set; }
     public DbSet<KillEnemiesQuest> KillEnemiesQuests { get; set; }
     public DbSet<FindLocationQuest> FindLocationQuests { get; set; }
     public DbSet<FindItemQuest> FindItemQuests { get; set; }
     public DbSet<FindNpcQuest> FindNpcQuests { get; set; }
-    public DbSet<LootTable> LootTables { get; set; }
-    public DbSet<Npc> Npcs { get; set; }
-    public DbSet<DialogueOption> DialogueOptions { get; set; }
+
+    // Items
+    public DbSet<Item> Items { get; set; }
+    public DbSet<Sword> Swords { get; set; }
+    public DbSet<Shield> Shields { get; set; }
+    public DbSet<Potion> Potions { get; set; }
+    public DbSet<Gold> Golds { get; set; }
+    public DbSet<GeneralItem> GeneralItems { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -43,6 +58,7 @@ public class RpgContext : DbContext
                     .WithMany()
                     .HasForeignKey("PlayerId")
             );
+
 
         modelBuilder.Entity<Exit>()
             .HasOne(e => e.Location)

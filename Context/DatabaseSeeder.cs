@@ -1,6 +1,9 @@
+using ConsoleRpg.Entities;
+using ConsoleRpg.Models.Characters;
+using ConsoleRpg.Models.Items;
 using ConsoleRpg.Models.Quests;
 
-namespace ConsoleRpg.Entities;
+namespace ConsoleRpg.Context;
 
 public class DatabaseSeeder
 {
@@ -22,8 +25,11 @@ public class DatabaseSeeder
         SeedExit("south", secondLocation.Id, startingLocation.Id);
 
         // Seed Items
-        var sword = SeedItem("Sword", "A sharp blade.", 10, startingLocation.Id);
-        var shield = SeedItem("Shield", "A sturdy shield.", 15, secondLocation.Id);
+        var sword = SeedSword("Sword", "A sharp blade.", 10, 15, startingLocation.Id);
+        var shield = SeedShield("Shield", "A sturdy shield.", 15, 10, secondLocation.Id);
+        var potion = SeedPotion("Potion", "A healing potion.", 5, 20, startingLocation.Id);
+        var gold = SeedGold("Gold", "A gold coin.", 1, 1, secondLocation.Id);
+        var generalItem = SeedGeneralItem("General Item", "A general item.", 2, startingLocation.Id);
 
         // Seed Enemies
         var goblin = SeedEnemy("Goblin", "A small, green creature with sharp teeth.", 20, 5, 10, startingLocation.Id);
@@ -63,6 +69,22 @@ public class DatabaseSeeder
 
         _context.SaveChanges();
     }
+
+    private Sword SeedSword(string name, string description, int cost, int damage, int locationId)
+    {
+        var sword = new Sword
+        {
+            Name = name,
+            Description = description,
+            Cost = cost,
+            Damage = damage,
+            LocationId = locationId
+        };
+        _context.Items.Add(sword);
+        _context.SaveChanges();
+        return sword;
+    }
+
     private LootTable SeedLootTable(List<Item> items, Enemy enemy)
     {
         var enemyId = enemy.Id;
@@ -165,24 +187,65 @@ public class DatabaseSeeder
         }
     }
 
-    private Item SeedItem(string name, string description, int cost, int locationId)
+    private Shield SeedShield(string name, string description, int cost, int defense, int locationId)
     {
-        if (!_context.Items.Any(i => i.Name == name))
+        var shield = new Shield
         {
-            var item = new Item
-            {
-                Name = name,
-                Description = description,
-                Cost = cost,
-                LocationId = locationId
-            };
-            _context.Items.Add(item);
-            _context.SaveChanges();
-            return item;
-        }
-
-        return _context.Items.First(i => i.Name == name);
+            Name = name,
+            Description = description,
+            Cost = cost,
+            Defense = defense,
+            LocationId = locationId
+        };
+        _context.Items.Add(shield);
+        _context.SaveChanges();
+        return shield;
     }
+
+    private Potion SeedPotion(string name, string description, int cost, int healing, int locationId)
+    {
+        var potion = new Potion
+        {
+            Name = name,
+            Description = description,
+            Cost = cost,
+            Healing = healing,
+            LocationId = locationId
+        };
+        _context.Items.Add(potion);
+        _context.SaveChanges();
+        return potion;
+    }
+
+    private Gold SeedGold(string name, string description, int cost, int amount, int locationId)
+    {
+        var gold = new Gold
+        {
+            Name = name,
+            Description = description,
+            Cost = cost,
+            Amount = amount,
+            LocationId = locationId
+        };
+        _context.Items.Add(gold);
+        _context.SaveChanges();
+        return gold;
+    }
+
+    private GeneralItem SeedGeneralItem(string name, string description, int cost, int locationId)
+    {
+        var generalItem = new GeneralItem
+        {
+            Name = name,
+            Description = description,
+            Cost = cost,
+            LocationId = locationId
+        };
+        _context.Items.Add(generalItem);
+        _context.SaveChanges();
+        return generalItem;
+    }
+
 
     private Location SeedLocation(string name, string description)
     {
@@ -217,7 +280,7 @@ public class DatabaseSeeder
         return _context.Merchants.First(m => m.Name == name);
     }
 
-    private Quest SeedQuest(string name, string description, int rewardExperience, int rewardGold, int locationId, int npcId, string questType, string questTarget)
+    private Quest? SeedQuest(string name, string description, int rewardExperience, int rewardGold, int locationId, int npcId, string questType, string questTarget)
     {
         Quest? quest = null;
 

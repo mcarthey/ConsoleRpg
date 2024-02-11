@@ -1,5 +1,7 @@
+using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
-using ConsoleRpg.Services;
+
+namespace ConsoleRpg.Services;
 
 public class QuestService
 {
@@ -15,7 +17,7 @@ public class QuestService
     public void AddQuest(Quest quest)
     {
         var player = _playerService.GetPlayer();
-        player.ActiveQuests.Add(quest);
+        quest.Players.Add(player);
         _context.SaveChanges();
     }
 
@@ -38,7 +40,7 @@ public class QuestService
     public List<Quest> GetActiveQuests()
     {
         var player = _playerService.GetPlayer();
-        return player.ActiveQuests;
+        return _context.Quests.Where(q => q.Players.Any(p => p.Id == player.Id) && !q.IsCompleted).ToList();
     }
 
     public void PickUpQuest(Quest quest)

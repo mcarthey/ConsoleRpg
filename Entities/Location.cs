@@ -1,4 +1,6 @@
-﻿namespace ConsoleRpg.Entities;
+﻿using ConsoleRpg.Models.Characters;
+
+namespace ConsoleRpg.Entities;
 
 // A location has a list of enemies and a list of items.
 // Initialize these lists in the constructor

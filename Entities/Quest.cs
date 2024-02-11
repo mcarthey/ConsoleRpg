@@ -1,9 +1,18 @@
-﻿namespace ConsoleRpg.Entities;
+﻿using ConsoleRpg.Models.Characters;
+
+namespace ConsoleRpg.Entities;
 
 // A quest belongs to a player.
 // Add a PlayerId property to link each quest to a player
 public abstract class Quest
 {
+    public Quest()
+    {
+        // Initialize Players list to avoid NullReferenceException when trying to add a player to it.
+        // This doesn't assume that a player will pick up the quest, it simply ensures that the list is ready to be used when needed.
+        Players = new List<Player>();
+    }
+
     public string Description { get; set; }
     public int Id { get; set; }
     public bool IsCompleted { get; set; }

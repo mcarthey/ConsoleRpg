@@ -1,5 +1,8 @@
+using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
-using ConsoleRpg.Services;
+using ConsoleRpg.Models.Items;
+
+namespace ConsoleRpg.Services;
 
 public class MerchantService
 {
@@ -32,6 +35,8 @@ public class MerchantService
     {
         var player = _playerService.GetPlayer();
         Console.WriteLine($"Welcome to {_merchant.Name}'s shop!");
+        Console.WriteLine($"You currently have {player.Gold} gold.");
+
         Console.WriteLine("Available items:");
         foreach (var item in _merchant.Inventory)
         {
@@ -50,7 +55,12 @@ public class MerchantService
             return;
         }
 
-        var selectedItem = _merchant.Inventory.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+        var selectedItem = _context.Items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Sword)
+            ?? _context.Items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Shield)
+            ?? _context.Items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Potion)
+            ?? _context.Items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Gold);
+
+
         if (selectedItem == null)
         {
             Console.WriteLine("Item not found.");

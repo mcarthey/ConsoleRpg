@@ -1,3 +1,4 @@
+using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
 
 namespace ConsoleRpg.Services;

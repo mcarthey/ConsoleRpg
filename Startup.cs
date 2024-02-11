@@ -1,7 +1,8 @@
-using ConsoleRpg.Entities;
+using ConsoleRpg.Context;
 using ConsoleRpg.Services;
-using ConsoleRpg;
 using Microsoft.Extensions.DependencyInjection;
+
+namespace ConsoleRpg;
 
 public class Startup
 {
@@ -14,6 +15,7 @@ public class Startup
         services.AddTransient<MerchantService>();
         services.AddTransient<CombatService>();
         services.AddTransient<QuestService>();
+        services.AddScoped<InventoryService>();
         services.AddTransient<Game>();
     }
 }

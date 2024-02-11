@@ -1,6 +1,10 @@
+using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
-using ConsoleRpg.Models;
-using ConsoleRpg.Services;
+using ConsoleRpg.Models.Characters;
+using ConsoleRpg.Models.Items;
+using Microsoft.EntityFrameworkCore;
+
+namespace ConsoleRpg.Services;
 
 public class CombatService
 {
@@ -8,14 +12,23 @@ public class CombatService
     private readonly PlayerService _playerService;
     private readonly Random _random = new();
     private readonly LocationService _locationService;
+    private readonly RpgContext _context;
     private readonly object _lock = new object();
 
-    public CombatService(PlayerService playerService, LocationService locationService)
+    public CombatService(PlayerService playerService, LocationService locationService, RpgContext context) // Update this line
     {
         _playerService = playerService;
         _locationService = locationService;
+        _context = context;
     }
 
+    public Item GetRandomItemFromLootTable(LootTable lootTable)
+    {
+        Random random = new Random();
+        var allItems = lootTable.Items.ToList();
+        int index = random.Next(allItems.Count);
+        return allItems.ElementAt(index);
+    }
 
     public void AttackEnemies(Location currentLocation)
     {
@@ -64,19 +77,35 @@ public class CombatService
             }
         }
     }
-    private void DropLoot(Player player, Enemy enemy)
+    public void DropLoot(Player player, Enemy enemy)
     {
-        if (enemy.LootTable != null)
+        var loot = GetRandomItemFromLootTable(enemy.LootTable);
+        Console.WriteLine($"Enemy dropped {loot.Name}!");
+        if (loot is Sword)
         {
-            var item = enemy.LootTable.GetRandomItem();
-            if (item != null)
-            {
-                player.Inventory.Add(item);
-                Console.WriteLine($"You found a {item.Name}!");
-                Console.WriteLine($"You received {item.Name} from {enemy.Name}!"); 
-            }
+            player.Swords.Add((Sword)loot);
         }
+        else if (loot is Shield)
+        {
+            player.Shields.Add((Shield)loot);
+        }
+        else if (loot is Potion)
+        {
+            player.Potions.Add((Potion)loot);
+        }
+        else if (loot is Gold)
+        {
+            player.Golds.Add((Gold)loot);
+        }
+        else
+        {
+            player.Inventory.Add(loot);
+        }
+        _context.SaveChanges();
     }
+
+
+
 
     private void UpdateQuestProgress(Enemy enemy)
     {

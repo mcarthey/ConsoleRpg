@@ -1,4 +1,4 @@
-﻿using ConsoleRpg.Entities;
+﻿using ConsoleRpg.Context;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ConsoleRpg
