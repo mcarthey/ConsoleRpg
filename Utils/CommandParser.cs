@@ -24,7 +24,7 @@ public class CommandParser
         }
 
         var commandName = input.Split(' ')[0].ToLower();
-        var commandParameters = input.Substring(input.IndexOf(' ') + 1); // Get everything after the first space
+        var commandParameters = input.Contains(' ') ? input.Substring(input.IndexOf(' ') + 1) : ""; // Get everything after the first space
 
         var commands = _commandRegistry.GetCommands();
 

@@ -54,11 +54,12 @@ public class MerchantService
             return;
         }
 
-        var selectedItem = _context.Items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Sword)
-            ?? _context.Items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Shield)
-            ?? _context.Items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Potion)
-            ?? _context.Items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Gold);
+        var items = _context.Items.ToList(); // Load items into memory
 
+        var selectedItem = items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Sword)
+            ?? items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Shield)
+            ?? items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Potion)
+            ?? items.FirstOrDefault(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase) && i is Gold);
 
         if (selectedItem == null)
         {

@@ -75,7 +75,8 @@ public class DatabaseSeeder
             { "visit", ("DisplayVisitMessageCommand", "Execute", Array.Empty<string>()) },
             { "view", ("ViewCurrentQuestsCommand", "Execute", Array.Empty<string>()) },
             { "pick", ("PickUpQuestCommand", "Execute", new string[] { "quest" }) },
-            { "quit", ("SavePlayerAndQuitCommand", "Execute", Array.Empty<string>()) }
+            { "quit", ("SavePlayerAndQuitCommand", "Execute", Array.Empty<string>()) },
+            { "help", ("HelpCommand", "Execute", Array.Empty<string>()) }
         };
 
         foreach (var command in commands)
