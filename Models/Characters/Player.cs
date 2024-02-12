@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using ConsoleRpg.Entities;
 using ConsoleRpg.Models.Items;
-using System.Collections.Generic;
+using ConsoleRpg.Utils;
 
 namespace ConsoleRpg.Models.Characters
 {

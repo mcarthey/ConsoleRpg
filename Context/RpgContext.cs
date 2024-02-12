@@ -14,6 +14,7 @@ public class RpgContext : DbContext
     public DbSet<LootTable> LootTables { get; set; }
     public DbSet<Npc> Npcs { get; set; }
     public DbSet<DialogueOption> DialogueOptions { get; set; }
+    public DbSet<Command> Commands { get; set; }
 
     // Characters
     public DbSet<Character> Characters { get; set; }

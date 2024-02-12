@@ -1,6 +1,6 @@
 using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
-using Spectre.Console;
+using ConsoleRpg.Utils;
 
 namespace ConsoleRpg.Services;
 

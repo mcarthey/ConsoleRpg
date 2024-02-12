@@ -1,5 +1,7 @@
 using Spectre.Console;
 
+namespace ConsoleRpg.Utils;
+
 public static class CustomConsole
 {
     public static void Info(string message)

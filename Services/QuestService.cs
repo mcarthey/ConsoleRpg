@@ -1,6 +1,6 @@
 using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
-using Spectre.Console;
+using ConsoleRpg.Utils;
 
 namespace ConsoleRpg.Services;
 
@@ -42,6 +42,11 @@ public class QuestService
     {
         var player = _playerService.GetPlayer();
         return _context.Quests.Where(q => q.Players.Any(p => p.Id == player.Id) && !q.IsCompleted).ToList();
+    }
+
+    public Quest? GetQuestByName(string questName)
+    {
+        return _context.Quests.FirstOrDefault(q => q.Name == questName);
     }
 
     public void PickUpQuest(Quest quest)

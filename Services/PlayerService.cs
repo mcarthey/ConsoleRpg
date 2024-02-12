@@ -1,7 +1,7 @@
 using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
 using ConsoleRpg.Models.Characters;
-using Spectre.Console;
+using ConsoleRpg.Utils;
 
 namespace ConsoleRpg.Services;
 

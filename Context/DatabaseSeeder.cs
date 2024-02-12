@@ -66,9 +66,41 @@ public class DatabaseSeeder
         goblin.LootTableId = goblinLootTable.Id;
         dragon.LootTableId = dragonLootTable.Id;
 
+        // Seed Commands
+        var commands = new Dictionary<string, (string ClassName, string MethodName, string[] Parameters)>
+        {
+            { "move", ("MoveToLocationCommand", "Execute", new string[] { "locationName" }) },
+            { "check", ("CheckInventoryCommand", "Execute", Array.Empty<string>()) },
+            { "attack", ("AttackEnemiesCommand", "Execute", new string[] { "location" }) },
+            { "visit", ("DisplayVisitMessageCommand", "Execute", Array.Empty<string>()) },
+            { "view", ("ViewCurrentQuestsCommand", "Execute", Array.Empty<string>()) },
+            { "pick", ("PickUpQuestCommand", "Execute", new string[] { "quest" }) },
+            { "quit", ("SavePlayerAndQuitCommand", "Execute", Array.Empty<string>()) }
+        };
+
+        foreach (var command in commands)
+        {
+            SeedCommand(command.Key, command.Value.ClassName, command.Value.MethodName, command.Value.Parameters);
+        }
 
         _context.SaveChanges();
     }
+
+    private void SeedCommand(string name, string className, string action, string[] parameters)
+    {
+        if (!_context.Commands.Any(c => c.Name == name))
+        {
+            var command = new Command
+            {
+                Name = name,
+                ClassName = className,
+                Action = action,
+                Parameters = parameters
+            };
+            _context.Commands.Add(command);
+        }
+    }
+
 
     private Sword SeedSword(string name, string description, int cost, int damage, int locationId)
     {

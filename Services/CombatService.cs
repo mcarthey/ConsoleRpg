@@ -2,8 +2,7 @@ using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
 using ConsoleRpg.Models.Characters;
 using ConsoleRpg.Models.Items;
-using Microsoft.EntityFrameworkCore;
-using Spectre.Console;
+using ConsoleRpg.Utils;
 
 namespace ConsoleRpg.Services;
 
