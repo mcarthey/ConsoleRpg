@@ -29,17 +29,8 @@ public class Startup
         services.AddTransient(typeof(IItemManagementService<>), typeof(ItemManagementService<>));
         services.AddTransient<ILocationService, LocationService>();
         services.AddTransient<IMerchantService, MerchantService>();
-        services.AddTransient<IPlayerService, PlayerService>();
         services.AddTransient<IQuestService, QuestService>();
         services.AddTransient<ISessionService, SessionService>();
-
-        services.AddTransient<PlayerService>();
-        services.AddTransient<LocationService>();
-        services.AddTransient<MerchantService>();
-        services.AddTransient<CombatService>();
-        services.AddTransient<QuestService>();
-        services.AddTransient<InventoryService>();
-        services.AddScoped<SessionService>();
 
         // Register command related classes
         services.AddTransient<CommandRegistry>();

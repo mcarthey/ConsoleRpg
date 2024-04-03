@@ -7,4 +7,5 @@ public interface ISessionService
     Player CurrentPlayer { get; }
     void Login(string username);
     void Logout();
+    void GainExperience(int amount);
 }

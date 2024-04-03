@@ -8,24 +8,26 @@ namespace ConsoleRpg.Services;
 public class QuestService : IQuestService
 {
     private readonly RpgContext _context;
-    private readonly IPlayerService _playerService;
+    private readonly ISessionService _sessionService;
+    private readonly IInventoryService _inventoryService;
 
-    public QuestService(RpgContext context, IPlayerService playerService)
+    public QuestService(RpgContext context, ISessionService sessionService, IInventoryService inventoryService)
     {
         _context = context;
-        _playerService = playerService;
+        _sessionService = sessionService;
+        _inventoryService = inventoryService;
     }
 
     public void AddQuest(Quest quest)
     {
-        var player = _playerService.GetPlayer();
+        var player = _sessionService.CurrentPlayer;
         quest.Players.Add(player);
         _context.SaveChanges();
     }
 
     public void ShowActiveQuests()
     {
-        var player = _playerService.GetPlayer();
+        var player = _sessionService.CurrentPlayer;
         var activeQuests = _context.Quests.Where(q => q.Players.Any(p => p.Id == player.Id) && !q.IsCompleted).ToList();
 
 
@@ -46,7 +48,7 @@ public class QuestService : IQuestService
 
     public void CompleteQuest(Quest quest)
     {
-        var player = _playerService.GetPlayer();
+        var player = _sessionService.CurrentPlayer;
         if (quest.KillCount > 0 && quest.KillCountProgress < quest.KillCount)
         {
             CustomConsole.Info("You have not killed enough enemies to complete this quest.");
@@ -55,14 +57,14 @@ public class QuestService : IQuestService
 
         quest.IsCompleted = true;
         quest.Players.Remove(player); // Remove the player from the quest's Players list
-        _playerService.GainExperience(quest.RewardExperience);
-        _playerService.AddGold(quest.RewardGold);
+        _sessionService.GainExperience(quest.RewardExperience);
+        _inventoryService.AddGold(quest.RewardGold);
         _context.SaveChanges();
     }
 
     public List<Quest> GetActiveQuests()
     {
-        var player = _playerService.GetPlayer();
+        var player = _sessionService.CurrentPlayer;
         return _context.Quests.Where(q => q.Players.Any(p => p.Id == player.Id) && !q.IsCompleted).ToList();
     }
 
@@ -73,7 +75,7 @@ public class QuestService : IQuestService
 
     public void PickUpQuest(Quest quest)
     {
-        var player = _playerService.GetPlayer();
+        var player = _sessionService.CurrentPlayer;
         if (quest != null)
         {
             AddQuest(quest);

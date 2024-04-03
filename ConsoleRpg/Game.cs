@@ -6,15 +6,13 @@ namespace ConsoleRpg;
 
 public class Game
 {
-    private readonly LocationService _locationService;
-    private readonly PlayerService _playerService;
-    private readonly CommandService _commandService;
-    private readonly SessionService _sessionService;
+    private readonly ILocationService _locationService;
+    private readonly ICommandService _commandService;
+    private readonly ISessionService _sessionService;
 
-    public Game(LocationService locationService, PlayerService playerService, CommandService commandService, SessionService sessionService)
+    public Game(ILocationService locationService, ICommandService commandService, ISessionService sessionService)
     {
         _locationService = locationService;
-        _playerService = playerService;
         _commandService = commandService;
         _sessionService = sessionService;
     }
