@@ -28,7 +28,7 @@ public class DatabaseSeeder
         var sword = (Sword)SeedItem(new Sword { Name = "Sword", Description = "A sharp blade.", Damage = 10, Durability = 100, Price = 15 }, startingLocation.Id);
         var shield = (Shield)SeedItem(new Shield { Name = "Shield", Description = "A sturdy shield.", Defense = 15, Durability = 100, Price = 10 }, secondLocation.Id);
         var potion = SeedItem(new Potion { Name = "Potion", Description = "A healing potion.", Duration = 5, Color = "Red", Effects = new List<Effect> { new HealEffect { Value = 1 } } }, startingLocation.Id);
-        var gold = SeedItem(new Gold { Name = "Gold", Description = "A gold coin.", Amount = 1, Denomination = 1 }, secondLocation.Id);
+        var gold = SeedItem(new Gold { Name = "Gold", Description = "A gold coin.", Value = 1, Denomination = 1 }, secondLocation.Id);
 
         // Seed Characters
         var goblin = SeedCharacter(new Enemy { Name = "Goblin", Description = "A small, green creature with sharp teeth.", Health = 20, Damage = 10, Experience = 5, LocationId = startingLocation.Id });
@@ -121,6 +121,16 @@ public class DatabaseSeeder
             var user = _context.Users.Find(userId);
             if (user != null)
             {
+                // Create Inventory and add items
+                var inventory = new Inventory();
+                var sword = _context.Items.Single(i => i.Name == "Sword");
+                var shield = _context.Items.Single(i => i.Name == "Shield");
+                var gold = _context.Items.Single(i => i.Name == "Gold");
+
+                inventory.Items.Add(sword);
+                inventory.Items.Add(shield);
+                inventory.Items.Add(gold);
+
                 _context.Characters.Add(player);
                 _context.SaveChanges();
 

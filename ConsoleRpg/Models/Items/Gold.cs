@@ -3,9 +3,10 @@ using ConsoleRpg.Models.Items.Types;
 
 namespace ConsoleRpg.Models.Items;
 
-public class Gold : Item
+public class Gold : Item, IValuable
 {
-    public int Amount { get; set; }
+    public int Value { get; set; }
+    public ValuableType Type => ValuableType.Gold;
     public int Denomination { get; set; }
 
 }

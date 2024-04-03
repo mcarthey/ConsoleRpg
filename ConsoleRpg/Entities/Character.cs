@@ -13,12 +13,14 @@ public abstract class Character
     public int Damage { get; set; }
     public int Experience { get; set; }
 
+    // entity framework navigation properties
     public int InventoryId { get; set; }
 
-    public virtual Inventory Inventory { get; set; }
+    // Do not initialize Inventory here because Entity Framework will take care of creating the Inventory instance when a new Character is created.
+    // If you initialize Inventory in the Character class, it might cause issues with Entity Framework's change tracking.
+    public virtual Inventory Inventory { get; set; } 
 
-    public int? LocationId { get; set; }
+    public int LocationId { get; set; }
 
-    [ForeignKey("LocationId")]
     public virtual Location Location { get; set; }
 }

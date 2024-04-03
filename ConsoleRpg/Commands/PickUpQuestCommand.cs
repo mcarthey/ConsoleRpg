@@ -5,10 +5,10 @@ namespace ConsoleRpg.Commands;
 
 public class PickUpQuestCommand : ICommand
 {
-    private readonly QuestService? _questService;
+    private readonly IQuestService? _questService;
     private readonly Quest? _quest;
 
-    public PickUpQuestCommand(QuestService questService)
+    public PickUpQuestCommand(IQuestService questService)
     {
         _questService = questService;
     }

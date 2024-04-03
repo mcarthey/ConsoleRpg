@@ -5,7 +5,7 @@ namespace ConsoleRpg.Commands;
 
 public class AttackEnemiesCommand : ICommand
 {
-    private readonly CombatService? _combatService;
+    private readonly ICombatService? _combatService;
     private readonly Location? _location;
 
     public AttackEnemiesCommand(Location location)
@@ -13,7 +13,7 @@ public class AttackEnemiesCommand : ICommand
         _location = location;
     }
 
-    public AttackEnemiesCommand(CombatService combatService)
+    public AttackEnemiesCommand(ICombatService combatService)
     {
         _combatService = combatService;
     }

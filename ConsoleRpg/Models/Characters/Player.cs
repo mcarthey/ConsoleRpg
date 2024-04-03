@@ -7,6 +7,6 @@ namespace ConsoleRpg.Models.Characters
 {
     public class Player : Character
     {
-        public virtual Inventory Inventory { get; set; }
     }
+
 }

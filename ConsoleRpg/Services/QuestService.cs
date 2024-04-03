@@ -1,6 +1,8 @@
 using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
 using ConsoleRpg.Models.Characters;
+using ConsoleRpg.Models.Items;
+using ConsoleRpg.Models.Items.Types;
 using ConsoleRpg.Utils;
 
 namespace ConsoleRpg.Services;
@@ -9,13 +11,13 @@ public class QuestService : IQuestService
 {
     private readonly RpgContext _context;
     private readonly ISessionService _sessionService;
-    private readonly IInventoryService _inventoryService;
+    private readonly IItemManagementService<Gold> _itemManagementService;
 
-    public QuestService(RpgContext context, ISessionService sessionService, IInventoryService inventoryService)
+    public QuestService(RpgContext context, ISessionService sessionService, IItemManagementService<Gold> itemManagementService)
     {
         _context = context;
         _sessionService = sessionService;
-        _inventoryService = inventoryService;
+        _itemManagementService = itemManagementService;
     }
 
     public void AddQuest(Quest quest)
@@ -58,7 +60,7 @@ public class QuestService : IQuestService
         quest.IsCompleted = true;
         quest.Players.Remove(player); // Remove the player from the quest's Players list
         _sessionService.GainExperience(quest.RewardExperience);
-        _inventoryService.AddGold(quest.RewardGold);
+        _itemManagementService.AddValue(quest.RewardGold, player.InventoryId, ValuableType.Gold);
         _context.SaveChanges();
     }
 

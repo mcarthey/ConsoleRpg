@@ -125,7 +125,7 @@ namespace ConsoleRpg.Migrations
                     Damage = table.Column<int>(type: "int", nullable: false),
                     Experience = table.Column<int>(type: "int", nullable: false),
                     InventoryId = table.Column<int>(type: "int", nullable: false),
-                    LocationId = table.Column<int>(type: "int", nullable: true),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
                     CharacterType = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     QuestId = table.Column<int>(type: "int", nullable: true),
                     Player_QuestId = table.Column<int>(type: "int", nullable: true)
@@ -137,7 +137,8 @@ namespace ConsoleRpg.Migrations
                         name: "FK_Characters_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Characters_Quests_Player_QuestId",
                         column: x => x.Player_QuestId,
@@ -200,7 +201,7 @@ namespace ConsoleRpg.Migrations
                     InventoryId = table.Column<int>(type: "int", nullable: true),
                     ItemType = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     MerchantId = table.Column<int>(type: "int", nullable: true),
-                    Amount = table.Column<int>(type: "int", nullable: true),
+                    Value = table.Column<int>(type: "int", nullable: true),
                     Denomination = table.Column<int>(type: "int", nullable: true),
                     Duration = table.Column<int>(type: "int", nullable: true),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: true),

@@ -12,6 +12,8 @@ namespace ConsoleRpg;
 
 public class Startup
 {
+    // Transient services are created each time they are requested
+    // Scoped services are created once per request
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddScoped<Game>();
@@ -30,12 +32,14 @@ public class Startup
         services.AddTransient<ILocationService, LocationService>();
         services.AddTransient<IMerchantService, MerchantService>();
         services.AddTransient<IQuestService, QuestService>();
-        services.AddTransient<ISessionService, SessionService>();
+        services.AddScoped<ISessionService, SessionService>();
+
+        // Register factories
+        services.AddTransient<IItemFactory, ItemFactory>();
 
         // Register command related classes
         services.AddTransient<CommandRegistry>();
         services.AddTransient<CommandParser>();
-        services.AddTransient<CommandService>();
 
         // Register new command classes
         services.AddTransient<MoveToLocationCommand>();
@@ -51,6 +55,7 @@ public class Startup
         services.AddScoped<SessionRepository>();
         services.AddScoped<LocationRepository>();
         services.AddScoped<MerchantRepository>();
+        services.AddScoped<IInventoryRepository, InventoryRepository>();
 
         // Create Logs directory if it doesn't exist
         Directory.CreateDirectory("Logs");

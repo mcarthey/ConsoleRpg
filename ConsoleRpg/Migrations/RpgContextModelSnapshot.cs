@@ -57,7 +57,7 @@ namespace ConsoleRpg.Migrations
                     b.Property<int>("InventoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LocationId")
+                    b.Property<int>("LocationId")
                         .HasColumnType("int");
 
                     b.Property<int>("MaxHealth")
@@ -396,10 +396,10 @@ namespace ConsoleRpg.Migrations
                 {
                     b.HasBaseType("ConsoleRpg.Entities.Item");
 
-                    b.Property<int>("Amount")
+                    b.Property<int>("Denomination")
                         .HasColumnType("int");
 
-                    b.Property<int>("Denomination")
+                    b.Property<int>("Value")
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("Gold");
@@ -551,7 +551,9 @@ namespace ConsoleRpg.Migrations
                 {
                     b.HasOne("ConsoleRpg.Entities.Location", "Location")
                         .WithMany("Characters")
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Location");
                 });

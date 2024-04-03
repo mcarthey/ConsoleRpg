@@ -4,9 +4,9 @@ namespace ConsoleRpg.Commands;
 
 public class ViewCurrentQuestsCommand : ICommand
 {
-    private readonly QuestService _questService;
+    private readonly IQuestService _questService;
 
-    public ViewCurrentQuestsCommand(QuestService questService)
+    public ViewCurrentQuestsCommand(IQuestService questService)
     {
         _questService = questService;
     }

@@ -4,9 +4,9 @@ namespace ConsoleRpg.Commands;
 
 public class VisitMerchantCommand : ICommand
 {
-    private readonly MerchantService _merchantService;
+    private readonly IMerchantService _merchantService;
 
-    public VisitMerchantCommand(MerchantService merchantService)
+    public VisitMerchantCommand(IMerchantService merchantService)
     {
         _merchantService = merchantService;
     }
