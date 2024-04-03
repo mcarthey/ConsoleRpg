@@ -308,7 +308,7 @@ namespace ConsoleRpg.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("PlayerId")
+                    b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -316,6 +316,8 @@ namespace ConsoleRpg.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Users");
                 });
@@ -372,14 +374,7 @@ namespace ConsoleRpg.Migrations
                     b.Property<int?>("QuestId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasIndex("QuestId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Characters", t =>
                         {
@@ -617,6 +612,15 @@ namespace ConsoleRpg.Migrations
                     b.Navigation("Npc");
                 });
 
+            modelBuilder.Entity("ConsoleRpg.Entities.User", b =>
+                {
+                    b.HasOne("ConsoleRpg.Models.Characters.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId");
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("ConsoleRpg.Models.Items.Effects.Effect", b =>
                 {
                     b.HasOne("ConsoleRpg.Models.Items.Potion", null)
@@ -638,14 +642,6 @@ namespace ConsoleRpg.Migrations
                     b.HasOne("ConsoleRpg.Entities.Quest", null)
                         .WithMany("Players")
                         .HasForeignKey("QuestId");
-
-                    b.HasOne("ConsoleRpg.Entities.User", "User")
-                        .WithOne("Player")
-                        .HasForeignKey("ConsoleRpg.Models.Characters.Player", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ConsoleRpg.Entities.Character", b =>
@@ -679,12 +675,6 @@ namespace ConsoleRpg.Migrations
             modelBuilder.Entity("ConsoleRpg.Entities.Quest", b =>
                 {
                     b.Navigation("Players");
-                });
-
-            modelBuilder.Entity("ConsoleRpg.Entities.User", b =>
-                {
-                    b.Navigation("Player")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ConsoleRpg.Models.Items.Potion", b =>

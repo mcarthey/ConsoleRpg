@@ -55,20 +55,6 @@ namespace ConsoleRpg.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DialogueOptions",
                 columns: table => new
                 {
@@ -142,7 +128,6 @@ namespace ConsoleRpg.Migrations
                     LocationId = table.Column<int>(type: "int", nullable: true),
                     CharacterType = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     QuestId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true),
                     Player_QuestId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -163,12 +148,6 @@ namespace ConsoleRpg.Migrations
                         column: x => x.QuestId,
                         principalTable: "Quests",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Characters_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,6 +167,25 @@ namespace ConsoleRpg.Migrations
                         principalTable: "Characters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PlayerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Characters_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "Characters",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -271,13 +269,6 @@ namespace ConsoleRpg.Migrations
                 column: "QuestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Characters_UserId",
-                table: "Characters",
-                column: "UserId",
-                unique: true,
-                filter: "[UserId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DialogueOptions_NpcId",
                 table: "DialogueOptions",
                 column: "NpcId");
@@ -318,6 +309,11 @@ namespace ConsoleRpg.Migrations
                 name: "IX_Quests_NpcId",
                 table: "Quests",
                 column: "NpcId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_PlayerId",
+                table: "Users",
+                column: "PlayerId");
         }
 
         /// <inheritdoc />
@@ -333,6 +329,9 @@ namespace ConsoleRpg.Migrations
                 name: "Effects");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "Items");
 
             migrationBuilder.DropTable(
@@ -343,9 +342,6 @@ namespace ConsoleRpg.Migrations
 
             migrationBuilder.DropTable(
                 name: "Quests");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Locations");

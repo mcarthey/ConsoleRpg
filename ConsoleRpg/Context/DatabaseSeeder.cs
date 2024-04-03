@@ -34,6 +34,12 @@ public class DatabaseSeeder
         var goblin = SeedCharacter(new Enemy { Name = "Goblin", Description = "A small, green creature with sharp teeth.", Health = 20, Damage = 10, Experience = 5, LocationId = startingLocation.Id });
         var dragon = SeedCharacter(new Enemy { Name = "Dragon", Description = "A large, fire-breathing beast.", Health = 100, Damage = 50, Experience = 20, LocationId = secondLocation.Id });
 
+        // Seed User
+        var user = SeedUser(new User { Username = "TestUser" });
+
+        // Seed Player
+        var player = SeedPlayer(user.Id, new Player { Name = "Player", Description = "This is the player.", Health = 100, Damage = 10, Experience = 0, LocationId = startingLocation.Id, MaxHealth = 100 });
+
         // Seed Merchants
         var merchant = SeedNpc(new Merchant { Name = "John the Merchant", Inventory = new List<Item> { sword, shield } });
 
@@ -63,6 +69,17 @@ public class DatabaseSeeder
 
         _context.SaveChanges();
     }
+
+    private User SeedUser(User user)
+    {
+        if (!_context.Users.Any(u => u.Username == user.Username))
+        {
+            _context.Users.Add(user);
+            _context.SaveChanges();
+        }
+        return user;
+    }
+
 
     private Location SeedLocation(string name, string description)
     {
@@ -96,6 +113,24 @@ public class DatabaseSeeder
         }
         return character;
     }
+
+    private Character SeedPlayer(int userId, Character player)
+    {
+        if (!_context.Characters.Any(c => c.Name == player.Name))
+        {
+            var user = _context.Users.Find(userId);
+            if (user != null)
+            {
+                _context.Characters.Add(player);
+                _context.SaveChanges();
+
+                user.PlayerId = player.Id;
+                _context.SaveChanges();
+            }
+        }
+        return player;
+    }
+
 
     private Npc SeedNpc(Npc npc)
     {

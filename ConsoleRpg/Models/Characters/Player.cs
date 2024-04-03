@@ -8,10 +8,5 @@ namespace ConsoleRpg.Models.Characters
     public class Player : Character
     {
         public virtual Inventory Inventory { get; set; }
-
-        public int UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
     }
 }

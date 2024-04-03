@@ -19,16 +19,6 @@ public class SessionRepository
         return _context.Users.Include(u => u.Player).FirstOrDefault(u => u.Username == username);
     }
 
-    public Player GetPlayerByUserId(int userId)
-    {
-        return _context.Characters.OfType<Player>().FirstOrDefault(p => p.User.Id == userId);
-    }
-
-    public Player GetPlayerByUsername(string username)
-    {
-        return _context.Characters.OfType<Player>().FirstOrDefault(p => p.User.Username == username);
-    }
-
     public void UpdatePlayer(Player currentPlayer)
     {
         throw new NotImplementedException();
