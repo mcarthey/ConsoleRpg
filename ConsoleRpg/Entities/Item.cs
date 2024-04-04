@@ -12,4 +12,7 @@ public abstract class Item
     public virtual Location Location { get; set; } 
     public int? LocationId { get; set; }
 
+    public int? InventoryId { get; set; }
+    public virtual Inventory Inventory { get; set; }
+
 }

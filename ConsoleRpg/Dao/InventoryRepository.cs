@@ -14,11 +14,12 @@ public class InventoryRepository : IInventoryRepository
 
     public Inventory GetInventory(int playerId)
     {
-        return _context.Characters
+        var character = _context.Characters
             .Include(c => c.Inventory)
             .ThenInclude(i => i.Items)
-            .Single(c => c.Id == playerId)
-            .Inventory;
+            .Single(c => c.Id == playerId);
+            
+        return character.Inventory;
     }
 
     public void AddItem(Item item, int inventoryId)
@@ -42,13 +43,4 @@ public class InventoryRepository : IInventoryRepository
         int index = new Random().Next(allItems.Count);
         return allItems.ElementAt(index);
     }
-}
-
-public interface IInventoryRepository
-{
-    Inventory GetInventory(int playerId);
-    void AddItem(Item item, int inventoryId);
-    void RemoveItem(Item item, int inventoryId);
-    Item GetRandomItem(int inventoryId);
-    // Add other methods as needed...
 }

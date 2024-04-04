@@ -582,7 +582,7 @@ namespace ConsoleRpg.Migrations
 
             modelBuilder.Entity("ConsoleRpg.Entities.Item", b =>
                 {
-                    b.HasOne("ConsoleRpg.Entities.Inventory", null)
+                    b.HasOne("ConsoleRpg.Entities.Inventory", "Inventory")
                         .WithMany("Items")
                         .HasForeignKey("InventoryId");
 
@@ -593,6 +593,8 @@ namespace ConsoleRpg.Migrations
                     b.HasOne("ConsoleRpg.Models.Npcs.Merchant", null)
                         .WithMany("Inventory")
                         .HasForeignKey("MerchantId");
+
+                    b.Navigation("Inventory");
 
                     b.Navigation("Location");
                 });

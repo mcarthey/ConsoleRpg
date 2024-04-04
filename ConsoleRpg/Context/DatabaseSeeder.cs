@@ -121,17 +121,28 @@ public class DatabaseSeeder
             var user = _context.Users.Find(userId);
             if (user != null)
             {
-                // Create Inventory and add items
-                var inventory = new Inventory();
+                // Initialize the player's Inventory
+                player.Inventory = new Inventory();
+
+                _context.Characters.Add(player);
+                _context.SaveChanges();
+
+                // Get the player's Inventory
+                var inventory = player.Inventory;
+
                 var sword = _context.Items.Single(i => i.Name == "Sword");
                 var shield = _context.Items.Single(i => i.Name == "Shield");
                 var gold = _context.Items.Single(i => i.Name == "Gold");
+
+                // Set the InventoryId property of the items
+                sword.InventoryId = inventory.Id;
+                shield.InventoryId = inventory.Id;
+                gold.InventoryId = inventory.Id;
 
                 inventory.Items.Add(sword);
                 inventory.Items.Add(shield);
                 inventory.Items.Add(gold);
 
-                _context.Characters.Add(player);
                 _context.SaveChanges();
 
                 user.PlayerId = player.Id;
@@ -140,6 +151,10 @@ public class DatabaseSeeder
         }
         return player;
     }
+
+
+
+
 
 
     private Npc SeedNpc(Npc npc)
