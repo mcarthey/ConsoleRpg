@@ -7,7 +7,7 @@ public abstract class DrinkableItem : Item, IDrinkable
     public bool IsPotable { get; set; }
     public int Quantity { get; set; }
 
-    public virtual void Drink()
+    public virtual void Drink(Character character)
     {
         if (!IsPotable)
         {
@@ -28,6 +28,6 @@ public interface IDrinkable
     bool IsPotable { get; set; }
     int Quantity { get; set; }
 
-    void Drink();
+    void Drink(Character character);
 }
 

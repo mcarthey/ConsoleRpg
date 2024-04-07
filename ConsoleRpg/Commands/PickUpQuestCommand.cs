@@ -20,18 +20,22 @@ public class PickUpQuestCommand : ICommand
 
     public void Execute(string[] parameters)
     {
-        if (parameters.Length == 0)
+        // Check if parameters are provided
+        if (parameters.Length == 0 || string.IsNullOrEmpty(parameters[0]))
         {
             throw new ArgumentException("A quest name must be provided.");
         }
 
         var questName = parameters[0];
+
+        // Check if quest exists
         var quest = _questService.GetQuestByName(questName);
         if (quest == null)
         {
             throw new InvalidOperationException($"Quest '{questName}' not found.");
         }
 
+        // Pick up the quest
         _questService.PickUpQuest(quest);
     }
 }

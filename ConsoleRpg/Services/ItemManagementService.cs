@@ -15,25 +15,9 @@ public class ItemManagementService<T> : IItemManagementService<T> where T : Item
         _itemFactory = itemFactory;
     }
 
-    public void PerformAction(T item)
+    public void PerformAction(T item, Character character)
     {
-        switch (item)
-        {
-            case IBreakable breakableItem:
-                breakableItem.Damage(1);
-                break;
-            case IDrinkable drinkableItem:
-                drinkableItem.Drink();
-                break;
-            case ILootable lootableItem:
-                lootableItem.Loot();
-                break;
-            case ISellable sellableItem:
-                sellableItem.Sell();
-                break;
-            default:
-                throw new InvalidOperationException("Unsupported item type.");
-        }
+        item.PerformAction(character);
     }
 
     public void AddValue(int amount, int inventoryId, ValuableType type)

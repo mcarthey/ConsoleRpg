@@ -28,7 +28,7 @@ public class DatabaseSeeder
         var sword = (Sword)SeedItem(new Sword { Name = "Sword", Description = "A sharp blade.", Damage = 10, Durability = 100, Price = 15 }, startingLocation.Id);
         var shield = (Shield)SeedItem(new Shield { Name = "Shield", Description = "A sturdy shield.", Defense = 15, Durability = 100, Price = 10 }, secondLocation.Id);
         var potion = SeedItem(new Potion { Name = "Potion", Description = "A healing potion.", Duration = 5, Color = "Red", Effects = new List<Effect> { new HealEffect { Value = 1 } } }, startingLocation.Id);
-        var gold = SeedItem(new Gold { Name = "Gold", Description = "A gold coin.", Value = 1, Denomination = 1 }, secondLocation.Id);
+        var gold = SeedItem(new Gold { Name = "Gold", Description = "gold.", Value = 1, Denomination = 1 }, secondLocation.Id);
 
         // Seed Characters
         var goblin = SeedCharacter(new Enemy { Name = "Goblin", Description = "A small, green creature with sharp teeth.", Health = 20, Damage = 10, Experience = 5, LocationId = startingLocation.Id });
@@ -41,7 +41,7 @@ public class DatabaseSeeder
         var player = SeedPlayer(user.Id, new Player { Name = "Player", Description = "This is the player.", Health = 100, Damage = 10, Experience = 0, LocationId = startingLocation.Id, MaxHealth = 100 });
 
         // Seed Merchants
-        var merchant = SeedNpc(new Merchant { Name = "John the Merchant", Inventory = new List<Item> { sword, shield } });
+        var merchant = SeedNpc(new Merchant { Name = "John the Merchant", Inventory = new List<Item> { sword, shield, potion } });
 
         // Seed Commands
         var commands = new Dictionary<string, (string ClassName, string MethodName, string[] Parameters)>
@@ -133,6 +133,7 @@ public class DatabaseSeeder
                 var sword = _context.Items.Single(i => i.Name == "Sword");
                 var shield = _context.Items.Single(i => i.Name == "Shield");
                 var gold = _context.Items.Single(i => i.Name == "Gold");
+                ((Gold)gold).Value = 100;
 
                 // Set the InventoryId property of the items
                 sword.InventoryId = inventory.Id;

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsoleRpg.Migrations
 {
     [DbContext(typeof(RpgContext))]
-    [Migration("20240404011652_InitialCreate")]
+    [Migration("20240406213736_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

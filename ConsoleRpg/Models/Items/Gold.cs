@@ -9,4 +9,8 @@ public class Gold : Item, IValuable
     public ValuableType Type => ValuableType.Gold;
     public int Denomination { get; set; }
 
+    public override void PerformAction(Character character)
+    {
+        throw new NotImplementedException();
+    }
 }

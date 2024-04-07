@@ -24,7 +24,8 @@ public class InventoryService : IInventoryService
         CustomConsole.Info("Inventory:");
         foreach (var item in _inventory.Items)
         {
-            CustomConsole.Info($"{item.Name}: {item.Description}");
+            item.Display();
+            //CustomConsole.Info($"{item.Name}: {item.Description}");
         }
     }
 
@@ -49,5 +50,15 @@ public class InventoryService : IInventoryService
     public void InitializeInventory(Player currentPlayer)
     {
         currentPlayer.Inventory ??= new Inventory();    
+    }
+
+    public Item GetItem(string itemName)
+    {
+        return _inventoryRepository.GetInventory(_sessionService.CurrentPlayer.Id).Items.FirstOrDefault(item => item.Name == itemName);
+    }
+
+    public void RemoveItem(Item item)
+    {
+        _inventoryRepository.RemoveItem(item, _inventory.Id);
     }
 }

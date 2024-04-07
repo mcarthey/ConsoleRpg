@@ -1,4 +1,5 @@
 ﻿using ConsoleRpg.Models.Characters;
+using ConsoleRpg.Utils;
 
 namespace ConsoleRpg.Entities;
 
@@ -15,4 +16,10 @@ public abstract class Item
     public int? InventoryId { get; set; }
     public virtual Inventory Inventory { get; set; }
 
+    public abstract void PerformAction(Character character);
+
+    public virtual void Display()
+    {
+        CustomConsole.Info($"{Name}: {Description}");
+    }
 }

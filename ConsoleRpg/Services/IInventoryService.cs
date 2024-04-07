@@ -1,5 +1,6 @@
 using ConsoleRpg.Entities;
 using ConsoleRpg.Models.Characters;
+using ConsoleRpg.Services;
 
 public interface IInventoryService
 {
@@ -8,4 +9,6 @@ public interface IInventoryService
     void RemoveItemFromInventory(Item item);
     Item GetRandomItemFromInventory();
     void InitializeInventory(Player currentPlayer);
+    Item GetItem(string itemName);
+    void RemoveItem(Item item);
 }

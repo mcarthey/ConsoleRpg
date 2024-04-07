@@ -10,13 +10,18 @@ public class Potion : DrinkableItem
     public string Color { get; set; }
     public virtual List<Effect> Effects { get; set; }
 
-    public override void Drink()
+    public override void PerformAction(Character character)
     {
-        base.Drink();
+        Drink(character);
+    }
+
+    public override void Drink(Character character)
+    {
+        base.Drink(character);
 
         foreach (var effect in Effects)
         {
-            //effect.Apply(/* character to apply effect to */);
+            effect.Apply(character);
         }
     }
 

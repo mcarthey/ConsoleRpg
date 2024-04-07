@@ -30,11 +30,19 @@ public class CommandParser
 
         if (commands.TryGetValue(commandName, out var command))
         {
-            command.Execute(new string[] { commandParameters });
+            try
+            {
+                command.Execute(new string[] { commandParameters });
+            }
+            catch (Exception ex)
+            {
+                CustomConsole.Warn(ex.Message);
+            }
         }
         else
         {
             CustomConsole.Warn("Invalid command. Please try again.");
         }
     }
+
 }
