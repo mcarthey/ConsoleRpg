@@ -12,12 +12,14 @@ public class QuestService : IQuestService
     private readonly RpgContext _context;
     private readonly ISessionService _sessionService;
     private readonly IItemManagementService<Gold> _itemManagementService;
+    private readonly ICharacterService _characterService;
 
-    public QuestService(RpgContext context, ISessionService sessionService, IItemManagementService<Gold> itemManagementService)
+    public QuestService(RpgContext context, ISessionService sessionService, IItemManagementService<Gold> itemManagementService, ICharacterService characterService)
     {
         _context = context;
         _sessionService = sessionService;
         _itemManagementService = itemManagementService;
+        _characterService = characterService;
     }
 
     public void AddQuest(Quest quest)
@@ -51,16 +53,20 @@ public class QuestService : IQuestService
     public void CompleteQuest(Quest quest)
     {
         var player = _sessionService.CurrentPlayer;
-        if (quest.KillCount > 0 && quest.KillCountProgress < quest.KillCount)
+        if (!quest.CheckIfCompleted())
         {
-            CustomConsole.Info("You have not killed enough enemies to complete this quest.");
+            CustomConsole.Info("You have not completed the requirements for this quest.");
             return;
         }
 
         quest.IsCompleted = true;
         quest.Players.Remove(player); // Remove the player from the quest's Players list
-        _sessionService.GainExperience(quest.RewardExperience);
+        _characterService.GainExperience(player, quest.RewardExperience);
         _itemManagementService.AddValue(quest.RewardGold, player.InventoryId, ValuableType.Gold);
+
+        // Reward the player with the items from the quest
+        quest.RewardPlayer(player);
+
         _context.SaveChanges();
     }
 

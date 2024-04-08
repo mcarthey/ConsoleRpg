@@ -1,4 +1,5 @@
 using ConsoleRpg.Entities;
+using ConsoleRpg.Models.Characters;
 using ConsoleRpg.Utils;
 
 namespace ConsoleRpg.Models.Quests;

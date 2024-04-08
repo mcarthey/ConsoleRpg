@@ -1,9 +1,9 @@
-using ConsoleRpg.Entities;
-using ConsoleRpg.Models.Items.Effects;
 using ConsoleRpg.Dao;
-using System.Collections.Generic;
+using ConsoleRpg.Entities;
 
-public class CharacterService
+namespace ConsoleRpg.Services;
+
+public class CharacterService : ICharacterService
 {
     private readonly CharacterRepository _characterRepository;
 
@@ -19,6 +19,12 @@ public class CharacterService
 
     public void SaveCharacter(Character character)
     {
+        _characterRepository.SaveChanges();
+    }
+
+    public void GainExperience(Character character, int amount)
+    {
+        character.Experience += amount;
         _characterRepository.SaveChanges();
     }
 }

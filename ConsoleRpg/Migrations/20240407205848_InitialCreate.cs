@@ -201,6 +201,7 @@ namespace ConsoleRpg.Migrations
                     InventoryId = table.Column<int>(type: "int", nullable: true),
                     ItemType = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     MerchantId = table.Column<int>(type: "int", nullable: true),
+                    QuestId = table.Column<int>(type: "int", nullable: true),
                     Value = table.Column<int>(type: "int", nullable: true),
                     Denomination = table.Column<int>(type: "int", nullable: true),
                     Duration = table.Column<int>(type: "int", nullable: true),
@@ -230,6 +231,11 @@ namespace ConsoleRpg.Migrations
                         name: "FK_Items_Npcs_MerchantId",
                         column: x => x.MerchantId,
                         principalTable: "Npcs",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Items_Quests_QuestId",
+                        column: x => x.QuestId,
+                        principalTable: "Quests",
                         principalColumn: "Id");
                 });
 
@@ -299,6 +305,11 @@ namespace ConsoleRpg.Migrations
                 name: "IX_Items_MerchantId",
                 table: "Items",
                 column: "MerchantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_QuestId",
+                table: "Items",
+                column: "QuestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Quests_LocationId",

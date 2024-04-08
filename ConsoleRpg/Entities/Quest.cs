@@ -30,7 +30,18 @@ public abstract class Quest
     public int? NpcId { get; set; } // Foreign key property
     public virtual Npc Npc { get; set; } // Navigation property
     public virtual List<Player> Players { get; set; }
-    
+    public virtual List<Item> RewardItems { get; set; }
+
     public abstract void DisplayProgress();
+    public abstract bool CheckIfCompleted();
+    public virtual void RewardPlayer(Player player)
+    {
+        foreach (var item in RewardItems)
+        {
+            player.Inventory.Items.Add(item);
+        }
+    }
+
+
 }
 

@@ -178,6 +178,9 @@ namespace ConsoleRpg.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("QuestId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("InventoryId");
@@ -185,6 +188,8 @@ namespace ConsoleRpg.Migrations
                     b.HasIndex("LocationId");
 
                     b.HasIndex("MerchantId");
+
+                    b.HasIndex("QuestId");
 
                     b.ToTable("Items");
 
@@ -594,6 +599,10 @@ namespace ConsoleRpg.Migrations
                         .WithMany("Inventory")
                         .HasForeignKey("MerchantId");
 
+                    b.HasOne("ConsoleRpg.Entities.Quest", null)
+                        .WithMany("RewardItems")
+                        .HasForeignKey("QuestId");
+
                     b.Navigation("Inventory");
 
                     b.Navigation("Location");
@@ -679,6 +688,8 @@ namespace ConsoleRpg.Migrations
             modelBuilder.Entity("ConsoleRpg.Entities.Quest", b =>
                 {
                     b.Navigation("Players");
+
+                    b.Navigation("RewardItems");
                 });
 
             modelBuilder.Entity("ConsoleRpg.Models.Items.Potion", b =>

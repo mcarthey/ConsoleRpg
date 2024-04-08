@@ -1,6 +1,7 @@
 using ConsoleRpg.Entities;
 using ConsoleRpg.Models.Characters;
-using ConsoleRpg.Services;
+
+namespace ConsoleRpg.Services;
 
 public interface IInventoryService
 {

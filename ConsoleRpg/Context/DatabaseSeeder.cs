@@ -53,6 +53,7 @@ public class DatabaseSeeder
             { "view", ("ViewCurrentQuestsCommand", "Execute", Array.Empty<string>()) },
             { "pick", ("PickUpQuestCommand", "Execute", new string[] { "quest" }) },
             { "quit", ("SavePlayerAndQuitCommand", "Execute", Array.Empty<string>()) },
+            { "drink", ("DrinkPotionCommand", "Execute", new string[] { "potion" }) },
             { "help", ("HelpCommand", "Execute", Array.Empty<string>()) }
         };
 
@@ -62,7 +63,8 @@ public class DatabaseSeeder
         }
 
         // Seed Quests
-        var findItemQuest = SeedQuest(new FindItemQuest { Name = "Find Item Quest", Description = "Find a specific item.", Target = "Sword", IsCompleted = false, RewardExperience = 10, RewardGold = 5, LocationId = startingLocation.Id });
+        var rewardItem = _context.Items.Single(i => i.Name == "Sword");
+        var findItemQuest = SeedQuest(new FindItemQuest { Name = "Find Item Quest", Description = "Find a specific item.", Target = "Sword", IsCompleted = false, RewardExperience = 10, RewardGold = 5, LocationId = startingLocation.Id }, new List<Item> { rewardItem });
         var findLocationQuest = SeedQuest(new FindLocationQuest { Name = "Find Location Quest", Description = "Find a specific location.", Target = "Second Location", IsCompleted = false, RewardExperience = 15, RewardGold = 10, LocationId = secondLocation.Id });
         var findNpcQuest = SeedQuest(new FindNpcQuest { Name = "Find NPC Quest", Description = "Find a specific NPC.", Target = "John the Merchant", IsCompleted = false, RewardExperience = 20, RewardGold = 15, LocationId = thirdLocation.Id });
         var killEnemiesQuest = SeedQuest(new KillEnemiesQuest { Name = "Kill Enemies Quest", Description = "Kill a certain number of enemies.", Target = "5", IsCompleted = false, RewardExperience = 25, RewardGold = 20, LocationId = fourthLocation.Id });
@@ -184,15 +186,20 @@ public class DatabaseSeeder
         }
     }
 
-    private Quest SeedQuest(Quest quest)
+    private Quest SeedQuest(Quest quest, List<Item> rewardItems = null)
     {
         if (!_context.Quests.Any(q => q.Name == quest.Name))
         {
+            if (rewardItems != null)
+            {
+                quest.RewardItems = rewardItems;
+            }
             _context.Quests.Add(quest);
             _context.SaveChanges();
         }
         return quest;
     }
+
 
 
 }

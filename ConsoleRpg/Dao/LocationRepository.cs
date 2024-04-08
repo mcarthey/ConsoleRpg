@@ -17,6 +17,12 @@ public class LocationRepository
         return _context.Locations.ToList();
     }
 
+    public Location GetLocationById(int id)
+    {
+        return _context.Locations.FirstOrDefault(location => location.Id == id);
+    }
+
+
     public Location GetStartingLocation()
     {
         return _context.Locations.FirstOrDefault() ?? throw new Exception("No starting location found.");

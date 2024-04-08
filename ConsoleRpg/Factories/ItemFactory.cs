@@ -1,6 +1,8 @@
 using ConsoleRpg.Models.Items;
 using ConsoleRpg.Models.Items.Types;
 
+namespace ConsoleRpg.Factories;
+
 public class ItemFactory : IItemFactory
 {
     public IValuable CreateValuableItem(int value, ValuableType type)

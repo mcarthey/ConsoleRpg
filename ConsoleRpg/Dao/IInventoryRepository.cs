@@ -1,5 +1,7 @@
 using ConsoleRpg.Entities;
 
+namespace ConsoleRpg.Dao;
+
 public interface IInventoryRepository
 {
     Inventory GetInventory(int playerId);

@@ -2,6 +2,7 @@ using ConsoleRpg.Commands;
 using ConsoleRpg.Context;
 using ConsoleRpg.Dao;
 using ConsoleRpg.Entities;
+using ConsoleRpg.Factories;
 using ConsoleRpg.Services;
 using ConsoleRpg.Utils;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,7 @@ public class Startup
         services.AddTransient<ILocationService, LocationService>();
         services.AddTransient<IMerchantService, MerchantService>();
         services.AddTransient<IQuestService, QuestService>();
+        services.AddTransient<ICharacterService, CharacterService>();
         services.AddScoped<ISessionService, SessionService>();
 
         // Register factories
@@ -55,6 +57,7 @@ public class Startup
         services.AddScoped<SessionRepository>();
         services.AddScoped<LocationRepository>();
         services.AddScoped<MerchantRepository>();
+        services.AddScoped<CharacterRepository>();
         services.AddScoped<IInventoryRepository, InventoryRepository>();
 
         // Create Logs directory if it doesn't exist

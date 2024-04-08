@@ -1,4 +1,6 @@
+using ConsoleRpg.Dao;
 using ConsoleRpg.Entities;
+using ConsoleRpg.Factories;
 using ConsoleRpg.Models.Items;
 using ConsoleRpg.Models.Items.Types;
 

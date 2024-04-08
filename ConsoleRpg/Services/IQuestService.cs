@@ -1,5 +1,7 @@
 using ConsoleRpg.Entities;
 
+namespace ConsoleRpg.Services;
+
 public interface IQuestService
 {
     void AddQuest(Quest quest);

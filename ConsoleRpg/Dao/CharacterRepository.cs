@@ -1,6 +1,8 @@
 using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
 
+namespace ConsoleRpg.Dao;
+
 public class CharacterRepository
 {
     private readonly RpgContext _context;

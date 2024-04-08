@@ -1,5 +1,7 @@
 using ConsoleRpg.Entities;
 
+namespace ConsoleRpg.Services;
+
 public interface ILocationService
 {
     void DisplayLocationDetails(Location location);
@@ -7,4 +9,5 @@ public interface ILocationService
     Location GetStartingLocation();
     void Move(Location newLocation);
     Location GetRandomLocation();
+    Location GetLocationById(int id);
 }

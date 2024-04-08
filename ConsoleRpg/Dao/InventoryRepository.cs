@@ -1,7 +1,8 @@
 using ConsoleRpg.Context;
 using ConsoleRpg.Entities;
-using ConsoleRpg.Utils;
 using Microsoft.EntityFrameworkCore;
+
+namespace ConsoleRpg.Dao;
 
 public class InventoryRepository : IInventoryRepository
 {

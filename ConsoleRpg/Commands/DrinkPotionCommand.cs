@@ -1,24 +1,24 @@
-using ConsoleRpg.Commands;
-using ConsoleRpg.Entities;
 using ConsoleRpg.Models.Items;
-using ConsoleRpg.Dao;
+using ConsoleRpg.Services;
+
+namespace ConsoleRpg.Commands;
 
 public class DrinkPotionCommand : ICommand
 {
     private readonly IInventoryService _inventoryService;
-    private readonly CharacterRepository _characterRepository;
+    private readonly CharacterService _characterService;
     private readonly int _characterId; // The ID of the character who will drink the potion
 
-    public DrinkPotionCommand(IInventoryService inventoryService, CharacterRepository characterRepository, int characterId)
+    public DrinkPotionCommand(IInventoryService inventoryService, CharacterService characterService, int characterId)
     {
         _inventoryService = inventoryService;
-        _characterRepository = characterRepository;
+        _characterService = characterService;
         _characterId = characterId;
     }
 
     public void Execute(string[] parameters)
     {
-        if (parameters.Length == 0)
+        if (parameters.Length == 0 || string.IsNullOrEmpty(parameters[0]))
         {
             throw new ArgumentException("A potion name must be provided.");
         }
@@ -31,9 +31,10 @@ public class DrinkPotionCommand : ICommand
             throw new InvalidOperationException($"Potion '{potionName}' not found in inventory.");
         }
 
-        var character = _characterRepository.GetCharacter(_characterId);
+        var character = _characterService.GetCharacter(_characterId);
         potion.Drink(character);
 
         _inventoryService.RemoveItem(potion);
+        _characterService.SaveCharacter(character);
     }
 }

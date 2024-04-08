@@ -43,6 +43,11 @@ public class LocationService : ILocationService
         return locations[randomIndex];
     }
 
+    public Location GetLocationById(int id)
+    {
+        return _locationRepository.GetLocationById(id);
+    }
+
     private void DisplayLocationContents(Location location)
     {
         CustomConsole.Info("\n-------------------------");
